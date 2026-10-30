@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0V40" fill="none" stroke="#00E5FF" stroke-opacity=".16" stroke-width="1"/>
+    </pattern>
+    <radialGradient id="fade">
+      <stop offset="0" stop-color="#F5F7FA" stop-opacity=".9"/>
+      <stop offset="1" stop-color="#F5F7FA" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="mask"><rect width="800" height="600" fill="url(#fade)"/></mask>
+  </defs>
+  <rect width="800" height="600" fill="url(#grid)" mask="url(#mask)"/>
+</svg>

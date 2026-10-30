@@ -1,0 +1,14 @@
+/* Keep the work-section heading aligned with the project grid. */
+@media screen and (min-width: 992px) {
+  .home_dive-in .home_dive-in_upper-shadow {
+    width: 100%;
+  }
+}
+
+/* The privacy controls remain available through the footer links. */
+#iubenda-cs-preferences-link,
+.iubenda-cs-preferences-link,
+.iubenda-tp-btn,
+.iubenda-tp-btn[data-tp-float] {
+  display: none !important;
+}
