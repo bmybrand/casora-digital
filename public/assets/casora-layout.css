@@ -22,33 +22,33 @@
 /* Give the Casora wordmark enough presence in both navigation areas. */
 .navbar .brand.is-navbar,
 .navbar .navbar_brand-svg {
-  width: 150px !important;
-  min-width: 150px !important;
+  width: 210px !important;
+  min-width: 210px !important;
 }
 
 .navbar .navbar_brand-svg {
-  height: 48px !important;
+  height: 56px !important;
 }
 
 .footer .navbar_brand-svg {
-  width: 210px !important;
-  height: 72px !important;
+  width: 320px !important;
+  height: 76px !important;
 }
 
 @media screen and (max-width: 767px) {
   .navbar .brand.is-navbar,
   .navbar .navbar_brand-svg {
-    width: 122px !important;
-    min-width: 122px !important;
+    width: 160px !important;
+    min-width: 160px !important;
   }
 
   .navbar .navbar_brand-svg {
-    height: 40px !important;
+    height: 46px !important;
   }
 
   .footer .navbar_brand-svg {
-    width: 170px !important;
-    height: 58px !important;
+    width: 250px !important;
+    height: 64px !important;
   }
 }
 
@@ -411,7 +411,82 @@ html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_video video {
   .section_cs-hero,
   .article_header
 ) {
+  min-height: 100svh !important;
   visibility: hidden !important;
+}
+
+/* Keep the document flow stable during the single hydration frame between
+   removing the legacy hero and mounting the React hero portal. */
+#casora-page-hero-slot {
+  min-height: 100svh;
+  background: #02040a;
+}
+
+#casora-page-hero-slot > .casora-current-hero {
+  min-height: 100svh;
+}
+
+/* Webflow toggles FAQ answers with display and height at the same time, which
+   produces a collapse/expand flash. Keep the answer in flow and animate one
+   grid track instead so natural-height content opens smoothly. */
+#legacy-page-root .faq_dropdown .dropdown-list {
+  position: static !important;
+  display: grid !important;
+  height: auto !important;
+  min-height: 0 !important;
+  grid-template-rows: 0fr;
+  overflow: hidden !important;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    grid-template-rows 460ms cubic-bezier(0.4, 0, 1, 1),
+    opacity 240ms ease,
+    visibility 0s linear 460ms;
+  will-change: grid-template-rows, opacity;
+}
+
+#legacy-page-root .faq_dropdown .dropdown-list > .faq_dropdown_inner-wrapper {
+  min-height: 0;
+  overflow: hidden;
+  transform: translate3d(0, -0.375rem, 0);
+  transition: transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+#legacy-page-root .faq_dropdown.casora-faq-open .dropdown-list {
+  grid-template-rows: 1fr;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    grid-template-rows 460ms cubic-bezier(0, 0, 0.2, 1),
+    opacity 280ms ease 40ms,
+    visibility 0s linear 0s;
+}
+
+#legacy-page-root .faq_dropdown.casora-faq-open .dropdown-list > .faq_dropdown_inner-wrapper {
+  transform: translate3d(0, 0, 0);
+}
+
+#legacy-page-root .faq_dropdown {
+  contain: layout paint;
+}
+
+#legacy-page-root .faq_dropdown .faq_dropdown_icon-border {
+  transition: transform 320ms ease, opacity 220ms ease;
+}
+
+#legacy-page-root .faq_dropdown.casora-faq-open .faq_dropdown_icon-border.is-roated {
+  opacity: 0;
+  transform: rotate(90deg) scaleX(0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #legacy-page-root .faq_dropdown .dropdown-list,
+  #legacy-page-root .faq_dropdown.casora-faq-open .dropdown-list,
+  #legacy-page-root .faq_dropdown .dropdown-list > .faq_dropdown_inner-wrapper,
+  #legacy-page-root .faq_dropdown .faq_dropdown_icon-border {
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
 }
 
 :is(

@@ -9,8 +9,46 @@ type LegacyRuntimeProps = {
 
 declare global {
   interface Window {
-    Webflow?: { ready?: () => void };
+    Webflow?: unknown;
   }
+}
+
+function setupFaqAccordions() {
+  const dropdowns = Array.from(
+    document.querySelectorAll<HTMLElement>("#legacy-page-root .faq_dropdown"),
+  );
+  const cleanups: Array<() => void> = [];
+
+  const setOpen = (dropdown: HTMLElement, open: boolean) => {
+    const toggle = dropdown.querySelector<HTMLElement>(".faq_dropdown_toggle");
+    const list = dropdown.querySelector<HTMLElement>(".dropdown-list");
+
+    dropdown.classList.toggle("casora-faq-open", open);
+    toggle?.classList.remove("w--open");
+    list?.classList.remove("w--open");
+    toggle?.setAttribute("aria-expanded", String(open));
+  };
+
+  dropdowns.forEach((dropdown) => {
+    const toggle = dropdown.querySelector<HTMLElement>(".faq_dropdown_toggle");
+    if (!toggle) return;
+
+    setOpen(dropdown, false);
+
+    const handleClick = (event: MouseEvent) => {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+
+      const shouldOpen = !dropdown.classList.contains("casora-faq-open");
+      dropdowns.forEach((item) => setOpen(item, item === dropdown && shouldOpen));
+    };
+
+    toggle.addEventListener("click", handleClick, { capture: true });
+    cleanups.push(() => toggle.removeEventListener("click", handleClick, { capture: true }));
+  });
+
+  return () => cleanups.forEach((cleanup) => cleanup());
 }
 
 export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
@@ -23,6 +61,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
     let cancelled = false;
     const added: HTMLScriptElement[] = [];
     const originalConsoleError = console.error;
+    const cleanupFaqAccordions = setupFaqAccordions();
 
     const patchedConsoleError = (...args: unknown[]) => {
       const primaryMessage =
@@ -64,10 +103,6 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
       }
 
       if (cancelled) return;
-      const ready = window.Webflow?.ready;
-      if (typeof ready === "function") {
-        ready.call(window.Webflow);
-      }
     };
 
     void loadScripts();
@@ -75,6 +110,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
     return () => {
       cancelled = true;
       added.forEach((script) => script.remove());
+      cleanupFaqAccordions();
       if (console.error === patchedConsoleError) {
         console.error = originalConsoleError;
       }
