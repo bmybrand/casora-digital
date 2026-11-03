@@ -1,0 +1,397 @@
+/* Keep the work-section heading aligned with the project grid. */
+@media screen and (min-width: 992px) {
+  .home_dive-in .home_dive-in_upper-shadow {
+    width: 100%;
+  }
+}
+
+/* The privacy controls remain available through the footer links. */
+#iubenda-cs-preferences-link,
+.iubenda-cs-preferences-link,
+.iubenda-tp-btn,
+.iubenda-tp-btn[data-tp-float] {
+  display: none !important;
+}
+
+/* Temporarily remove the placeholder brand wall everywhere. */
+.home_brands,
+.home_brands + .divider {
+  display: none !important;
+}
+
+/* Give the Casora wordmark enough presence in both navigation areas. */
+.navbar .brand.is-navbar,
+.navbar .navbar_brand-svg {
+  width: 150px !important;
+  min-width: 150px !important;
+}
+
+.navbar .navbar_brand-svg {
+  height: 48px !important;
+}
+
+.footer .navbar_brand-svg {
+  width: 210px !important;
+  height: 72px !important;
+}
+
+@media screen and (max-width: 767px) {
+  .navbar .brand.is-navbar,
+  .navbar .navbar_brand-svg {
+    width: 122px !important;
+    min-width: 122px !important;
+  }
+
+  .navbar .navbar_brand-svg {
+    height: 40px !important;
+  }
+
+  .footer .navbar_brand-svg {
+    width: 170px !important;
+    height: 58px !important;
+  }
+}
+
+/* Replace the embedded legacy Webflow/Phunk lockup on About with Casora. */
+.page_about .about_webflow-phunkl > .heading_standard,
+.page_about .about_webflow-phunkl > .about_phunk-logo {
+  display: none !important;
+}
+
+.page_about .about_webflow-phunkl::after {
+  content: "";
+  display: block;
+  width: min(320px, 75vw);
+  height: 118px;
+  background: url("/assets/casora-header-logo.png") left center / contain no-repeat;
+}
+
+/* About hero follows the original floating-cutout composition, with original Casora art. */
+.page_about .about_hero .pricing_hero_image {
+  content: url("/assets/generated/about-hero-cutout.png") !important;
+  width: min(100%, 520px) !important;
+  height: auto !important;
+  max-height: 520px !important;
+  padding: 1.5rem !important;
+  object-fit: contain !important;
+  align-self: center !important;
+  justify-self: center !important;
+}
+
+@media screen and (max-width: 767px) {
+  .page_about .about_hero .pricing_hero_image {
+    width: min(88vw, 420px) !important;
+    max-height: 420px !important;
+    padding: 0.75rem !important;
+  }
+}
+
+.page_about .about_dark .mask-3 > .w-slide:nth-child(1) .cta_slider_image img {
+  content: url("/assets/generated/mascot-imagination.png") !important;
+}
+
+.page_about .about_dark .mask-3 > .w-slide:nth-child(2) .cta_slider_image img {
+  content: url("/assets/generated/mascot-vision.png") !important;
+}
+
+.page_about .about_dark .mask-3 > .w-slide:nth-child(3) .cta_slider_image img {
+  content: url("/assets/generated/mascot-efficiency.png") !important;
+}
+
+.page_about .about_dark .mask-3 > .w-slide:nth-child(4) .cta_slider_image img {
+  content: url("/assets/generated/mascot-fun.png") !important;
+}
+
+.page_about .about_dark .cta_slider_image img {
+  object-fit: contain !important;
+}
+
+/* Restore the rich original slider treatment with Casora's own palette. */
+.page_about .about_dark .cta_slider {
+  background-color: #0a1f44 !important;
+  background-image:
+    url("/6501f1891917bde75ab542ee/65367e4b35a6ca4831b8b221_Grid%202.svg"),
+    linear-gradient(180deg, rgba(10, 31, 68, 0) 38%, #007bff 82%, #00e5ff 118%) !important;
+  background-position: left bottom, center !important;
+  background-repeat: no-repeat, no-repeat !important;
+  background-size: contain, cover !important;
+  border-color: rgba(107, 114, 128, 0.48) !important;
+  box-shadow: inset 0 -1px 0 rgba(245, 247, 250, 0.3);
+}
+
+.page_about .about_dark .cta_slider_content {
+  color: #f5f7fa;
+}
+
+.page_about .about_dark .cta_slider_content .button {
+  background: linear-gradient(135deg, #00e5ff, #007bff 55%, #0a1f44) !important;
+  border-color: rgba(245, 247, 250, 0.55) !important;
+  color: #f5f7fa !important;
+}
+
+/* Original, fictional reviewer portraits; order repeats consistently in sliders. */
+.home_clients_slide:nth-child(6n + 1) .home_clients_card_headshot img {
+  content: url("/assets/generated/review-evan.png") !important;
+}
+
+.home_clients_slide:nth-child(6n + 2) .home_clients_card_headshot img {
+  content: url("/assets/generated/review-nadia.png") !important;
+}
+
+.home_clients_slide:nth-child(6n + 3) .home_clients_card_headshot img {
+  content: url("/assets/generated/review-daniel.png") !important;
+}
+
+.home_clients_slide:nth-child(6n + 4) .home_clients_card_headshot img {
+  content: url("/assets/generated/review-maya.png") !important;
+}
+
+.home_clients_slide:nth-child(6n + 5) .home_clients_card_headshot img {
+  content: url("/assets/generated/review-marcus.png") !important;
+}
+
+.home_clients_slide:nth-child(6n + 6) .home_clients_card_headshot img {
+  content: url("/assets/generated/review-adrian.png") !important;
+}
+
+/* Section-led imagery: every visual is assigned to the content it explains. */
+html[data-wf-page="6501f1891917bde75ab54340"] .home_intro img.home_spline_roboto.display-tablet {
+  content: url("/assets/generated/mascot-efficiency.png") !important;
+  object-fit: contain !important;
+}
+
+/* Preserve the live Spline canvas on desktop; use the PNG only as the responsive fallback. */
+@media screen and (min-width: 992px) {
+  html[data-wf-page="6501f1891917bde75ab54340"] .home_intro_character > div.home_spline_roboto {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    content: normal !important;
+  }
+
+  html[data-wf-page="6501f1891917bde75ab54340"] .home_intro_character > img.home_spline_roboto.display-tablet {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  html[data-wf-page="6501f1891917bde75ab54340"] .home_intro_character > div.home_spline_roboto {
+    display: none !important;
+  }
+
+  html[data-wf-page="6501f1891917bde75ab54340"] .home_intro_character > img.home_spline_roboto.display-tablet {
+    display: inline-block !important;
+  }
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_aspects_card:nth-child(1) .home_aspects_card_image img {
+  content: url("/assets/generated/web-ui-warm.png") !important;
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_aspects_card:nth-child(2) .home_aspects_card_image img {
+  content: url("/assets/generated/brand-editorial-warm.png") !important;
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_dive-in_grid > .home_dive-in_image:nth-child(1) img,
+html[data-wf-page="651190a53799a2c59a1cb4eb"] .case_study_list .case_card:nth-child(1) .case_image > img {
+  content: url("/assets/generated/case-drivelodge-hero.png") !important;
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_dive-in_grid > .home_dive-in_image:nth-child(3) img,
+html[data-wf-page="651190a53799a2c59a1cb4eb"] .case_study_list .case_card:nth-child(4) .case_image > img {
+  content: url("/assets/generated/case-hacien-packaging.png") !important;
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_dive-in_grid > .home_dive-in_image:nth-child(5) img,
+html[data-wf-page="651190a53799a2c59a1cb4eb"] .case_study_list .case_card:nth-child(5) .case_image > img {
+  content: url("/assets/generated/case-mobillio-hero.png") !important;
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_dive-in_grid > .home_dive-in_image:nth-child(7) img,
+html[data-wf-page="651190a53799a2c59a1cb4eb"] .case_study_list .case_card:nth-child(9) .case_image > img {
+  content: url("/assets/generated/case-mannson-portal.png") !important;
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_dive-in_grid > .home_dive-in_image:nth-child(9) img,
+html[data-wf-page="651190a53799a2c59a1cb4eb"] .case_study_list .case_card:nth-child(8) .case_image > img {
+  content: url("/assets/generated/case-boxiq-hero.png") !important;
+}
+
+html[data-wf-page="6501f1891917bde75ab54340"] .home_dive-in_grid > .home_dive-in_image:nth-child(11) img,
+html[data-wf-page="651190a53799a2c59a1cb4eb"] .case_study_list .case_card:nth-child(6) .case_image > img {
+  content: url("/assets/generated/case-watch-hero.png") !important;
+}
+
+/* Services overview: three disciplines, then a transparent device cutout. */
+html[data-wf-page="651188ba720c20cd5abd7ca1"] .service_card:nth-child(3n + 1) .service_card_image img {
+  content: url("/assets/generated/web-ui-warm.png") !important;
+}
+
+html[data-wf-page="651188ba720c20cd5abd7ca1"] .service_card:nth-child(3n + 2) .service_card_image img {
+  content: url("/assets/generated/brand-editorial-warm.png") !important;
+}
+
+html[data-wf-page="651188ba720c20cd5abd7ca1"] .service_card:nth-child(3n) .service_card_image img {
+  content: url("/assets/generated/software-system-amber.png") !important;
+}
+
+html[data-wf-page="651188ba720c20cd5abd7ca1"] .services_mobile_image {
+  content: url("/assets/generated/cutout-services-devices.png") !important;
+  object-fit: contain !important;
+}
+
+/* Discipline pages use images from their own craft, not a global random cycle. */
+html[data-wf-page="65280819fb9b5d8958073589"] .pricing_features .service_card:nth-child(odd) .service_card_image img {
+  content: url("/assets/generated/web-ui-warm.png") !important;
+}
+
+html[data-wf-page="65280819fb9b5d8958073589"] .pricing_features .service_card:nth-child(even) .service_card_image img {
+  content: url("/assets/generated/mobile-product-sage.png") !important;
+}
+
+html[data-wf-page="652e8c80374d39685ed4491c"] .pricing_features .service_card:nth-child(odd) .service_card_image img {
+  content: url("/assets/generated/brand-editorial-warm.png") !important;
+}
+
+html[data-wf-page="652e8c80374d39685ed4491c"] .pricing_features .service_card:nth-child(even) .service_card_image img {
+  content: url("/assets/generated/editorial-plum.png") !important;
+}
+
+html[data-wf-page="652e8d2e45884e79273bd54c"] .pricing_features .service_card:nth-child(odd) .service_card_image img {
+  content: url("/assets/generated/software-system-amber.png") !important;
+}
+
+html[data-wf-page="652e8d2e45884e79273bd54c"] .pricing_features .service_card:nth-child(even) .service_card_image img {
+  content: url("/assets/generated/case-mannson-portal.png") !important;
+}
+
+html[data-wf-page="653fb139c88397c43243d4de"] .pricing_subs_card:nth-child(1) img {
+  content: url("/assets/generated/web-ui-warm.png") !important;
+}
+
+html[data-wf-page="653fb139c88397c43243d4de"] .pricing_subs_card:nth-child(2) img {
+  content: url("/assets/generated/brand-editorial-warm.png") !important;
+}
+
+html[data-wf-page="653fb139c88397c43243d4de"] .pricing_subs_card:nth-child(3) img {
+  content: url("/assets/generated/software-system-amber.png") !important;
+}
+
+/* No-code page: each section uses a purpose-built visual matching its layout role. */
+html[data-wf-page="6531a5690306437f8900595d"] .webflow_hero_image img {
+  content: url("/assets/generated/webflow-hero-builder-transparent.png") !important;
+  object-fit: contain !important;
+}
+
+html[data-wf-page="6531a5690306437f8900595d"] .webflow_desginer {
+  content: url("/assets/generated/webflow-designer-workspace.png") !important;
+  object-fit: contain !important;
+}
+
+html[data-wf-page="6531a5690306437f8900595d"] .webflow-cta-image_element {
+  content: url("/assets/generated/webflow-responsive-showcase.png") !important;
+  object-fit: contain !important;
+}
+
+html[data-wf-page="6511912d100d0ef7d3ca318f"] .contact_book-icon {
+  content: url("/assets/generated/cutout-contact-calendar.png") !important;
+  object-fit: contain !important;
+}
+
+/* Blog images are assigned per article in the HTML; do not force a repeated nth-child cycle. */
+
+body.article-web-evolution .article img {
+  content: url("/assets/generated/article-web-evolution.png") !important;
+}
+
+body.article-transit-design .article img {
+  content: url("/assets/generated/article-transit-design.png") !important;
+}
+
+body.article-design-recognition .article img {
+  content: url("/assets/generated/article-design-recognition.png") !important;
+}
+
+body.article-web-evolution .article_related .w-dyn-item:nth-child(3n + 1) img,
+body.article-transit-design .article_related .w-dyn-item:nth-child(3n + 1) img,
+body.article-design-recognition .article_related .w-dyn-item:nth-child(3n + 1) img {
+  content: url("/assets/generated/article-web-evolution.png") !important;
+}
+
+body.article-web-evolution .article_related .w-dyn-item:nth-child(3n + 2) img,
+body.article-transit-design .article_related .w-dyn-item:nth-child(3n + 2) img,
+body.article-design-recognition .article_related .w-dyn-item:nth-child(3n + 2) img {
+  content: url("/assets/generated/article-transit-design.png") !important;
+}
+
+body.article-web-evolution .article_related .w-dyn-item:nth-child(3n) img,
+body.article-transit-design .article_related .w-dyn-item:nth-child(3n) img,
+body.article-design-recognition .article_related .w-dyn-item:nth-child(3n) img {
+  content: url("/assets/generated/article-design-recognition.png") !important;
+}
+
+/* Each published case study keeps a coherent project-specific visual family. */
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_cs-hero img { content: url("/assets/generated/case-drivelodge-hero.png") !important; }
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_image img { content: url("/assets/generated/case-drivelodge-configurator.png") !important; }
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_video img,
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_cs-scroll img { content: url("/assets/generated/case-drivelodge-workshop.png") !important; }
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_image:nth-of-type(5) img,
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_image:nth-of-type(9) img { content: url("/assets/generated/case-drivelodge-workshop.png") !important; }
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_video .cs_video { background-image: url("/assets/generated/case-drivelodge-workshop.png") !important; }
+
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_cs-hero img { content: url("/assets/generated/case-hacien-hero.png") !important; }
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_image img { content: url("/assets/generated/case-hacien-packaging.png") !important; }
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_video img,
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_cs-scroll img { content: url("/assets/generated/case-hacien-commerce.png") !important; }
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_image:nth-of-type(5) img,
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_image:nth-of-type(9) img { content: url("/assets/generated/case-hacien-commerce.png") !important; }
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_video .cs_video { background-image: url("/assets/generated/case-hacien-commerce.png") !important; }
+
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_cs-hero img { content: url("/assets/generated/case-mobillio-hero.png") !important; }
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_image img { content: url("/assets/generated/case-mobillio-dashboard.png") !important; }
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_video img,
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_cs-scroll img { content: url("/assets/generated/case-mobillio-travel.png") !important; }
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_image:nth-of-type(5) img,
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_image:nth-of-type(9) img { content: url("/assets/generated/case-mobillio-travel.png") !important; }
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_video .cs_video { background-image: url("/assets/generated/case-mobillio-travel.png") !important; }
+
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_cs-hero img { content: url("/assets/generated/case-mannson-hero.png") !important; }
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_image img { content: url("/assets/generated/case-mannson-portal.png") !important; }
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_video img,
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_cs-scroll img { content: url("/assets/generated/case-mannson-brand.png") !important; }
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_image:nth-of-type(5) img,
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_image:nth-of-type(9) img { content: url("/assets/generated/case-mannson-brand.png") !important; }
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_video .cs_video { background-image: url("/assets/generated/case-mannson-brand.png") !important; }
+
+html[data-wf-page="65452f13337ff458aa656d41"] .section_cs-hero img { content: url("/assets/generated/case-boxiq-hero.png") !important; }
+html[data-wf-page="65452f13337ff458aa656d41"] .section_image img { content: url("/assets/generated/case-boxiq-app.png") !important; }
+html[data-wf-page="65452f13337ff458aa656d41"] .section_video img,
+html[data-wf-page="65452f13337ff458aa656d41"] .section_cs-scroll img { content: url("/assets/generated/case-boxiq-merch.png") !important; }
+html[data-wf-page="65452f13337ff458aa656d41"] .section_image:nth-of-type(5) img,
+html[data-wf-page="65452f13337ff458aa656d41"] .section_image:nth-of-type(9) img { content: url("/assets/generated/case-boxiq-merch.png") !important; }
+html[data-wf-page="65452f13337ff458aa656d41"] .section_video .cs_video { background-image: url("/assets/generated/case-boxiq-merch.png") !important; }
+
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_cs-hero img { content: url("/assets/generated/case-watch-hero.png") !important; }
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_image img { content: url("/assets/generated/case-watch-studio.png") !important; }
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_video img,
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_cs-scroll img { content: url("/assets/generated/case-watch-commerce.png") !important; }
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_image:nth-of-type(5) img,
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_image:nth-of-type(9) img { content: url("/assets/generated/case-watch-commerce.png") !important; }
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_video .cs_video { background-image: url("/assets/generated/case-watch-commerce.png") !important; }
+
+html[data-wf-page="68c03a7d801632a9e9c0b85d"] .section_video video,
+html[data-wf-page="67124e9cf1a288b7b40baf6c"] .section_video video,
+html[data-wf-page="6531bf1db27b3ea5950ee8e3"] .section_video video,
+html[data-wf-page="6531c306e78521f64bd17e95"] .section_video video,
+html[data-wf-page="65452f13337ff458aa656d41"] .section_video video,
+html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_video video {
+  display: none !important;
+}
+
+.section_cs-hero img,
+.section_image img,
+.section_video img,
+.section_cs-scroll img {
+  object-fit: cover;
+}

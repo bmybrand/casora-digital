@@ -1,0 +1,208 @@
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+#legacy-page-root {
+  display: contents;
+}
+
+#home-hero-slot {
+  min-height: 100svh;
+  background: #02040a;
+}
+
+/* Keep Webflow's custom carousel cursor available for the review slider. Its
+   default arrow state remains hidden until the slider interaction reveals it. */
+.slider_hover-arrows {
+  pointer-events: none;
+}
+
+.slider_hover-arrows .next-arrow,
+.slider_hover-arrows .previous-arrow {
+  transition: opacity 260ms ease-out !important;
+  will-change: opacity;
+}
+
+#legacy-page-root .slider_hover-arrows [style*="opacity:0"],
+#legacy-page-root .slider_hover-arrows [style*="opacity: 0"] {
+  opacity: 0 !important;
+}
+
+/* The restored Next.js closing components replace the exported Webflow ones. */
+#legacy-page-root .home_cta,
+#legacy-page-root .footer,
+#legacy-page-root .divider:has(+ .home_cta) {
+  display: none !important;
+}
+
+.casora-closing-cta,
+.casora-site-footer {
+  color: #f5f7fa;
+  font-family: Arial, sans-serif;
+}
+
+.casora-closing-cta {
+  min-height: 570px;
+  background:
+    radial-gradient(circle at 3% 100%, rgba(0, 123, 255, 0.42), transparent 38%),
+    radial-gradient(circle at 100% 0%, rgba(0, 229, 255, 0.22), transparent 43%),
+    #07111f;
+  display: flex;
+  align-items: center;
+}
+
+.casora-closing-cta__inner,
+.casora-site-footer__inner {
+  width: min(100% - 48px, 1460px);
+  margin-inline: auto;
+}
+
+.casora-closing-cta__inner {
+  padding-block: 96px;
+}
+
+.casora-closing-cta__eyebrow {
+  margin: 0 0 24px;
+  color: #f5f7fa;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.casora-closing-cta h2 {
+  max-width: 720px;
+  margin: 0 0 32px;
+  color: #f5f7fa;
+  font-size: clamp(52px, 5vw, 82px);
+  font-weight: 700;
+  letter-spacing: -0.055em;
+  line-height: 1.03;
+}
+
+.casora-closing-cta a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 25px;
+  border-radius: 999px;
+  background: #f5f7fa;
+  color: #02050b;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.casora-closing-cta a:hover {
+  background: #00e5ff;
+  color: #0a1f44;
+  transform: translateY(-2px);
+}
+
+.casora-site-footer {
+  background: #02050b;
+  padding: 72px 0 0;
+  overflow: hidden;
+}
+
+.casora-site-footer__grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 2fr) repeat(3, minmax(130px, 0.75fr));
+  gap: 72px;
+  padding-bottom: 72px;
+}
+
+.casora-site-footer__brand img {
+  display: block;
+  width: min(100%, 300px);
+  height: auto;
+}
+
+.casora-site-footer__brand p {
+  max-width: 450px;
+  margin: 28px 0 0;
+  color: #9aa4b3;
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.casora-site-footer nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.casora-site-footer h3 {
+  margin: 0 0 8px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.casora-site-footer nav a {
+  color: #f5f7fa;
+  font-size: 16px;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 160ms ease;
+}
+
+.casora-site-footer nav a:hover {
+  color: #00e5ff;
+}
+
+.casora-site-footer__base {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  padding-top: 28px;
+  border-top: 1px solid #222a36;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .casora-site-footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 48px 32px;
+  }
+
+  .casora-site-footer__brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .casora-closing-cta {
+    min-height: 500px;
+  }
+
+  .casora-closing-cta__inner,
+  .casora-site-footer__inner {
+    width: min(100% - 36px, 1460px);
+  }
+
+  .casora-closing-cta h2 {
+    font-size: clamp(44px, 14vw, 64px);
+  }
+
+  .casora-site-footer__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .casora-site-footer__base {
+    flex-direction: column;
+  }
+
+}
