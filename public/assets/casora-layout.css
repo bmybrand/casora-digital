@@ -426,23 +426,21 @@ html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_video video {
   min-height: 100svh;
 }
 
-/* Webflow toggles FAQ answers with display and height at the same time, which
-   produces a collapse/expand flash. Keep the answer in flow and animate one
-   grid track instead so natural-height content opens smoothly. */
+/* Use a measured height for FAQ answers so opening doesn't jump while the
+   browser resolves an intrinsic grid track. */
 #legacy-page-root .faq_dropdown .dropdown-list {
   position: static !important;
-  display: grid !important;
-  height: auto !important;
+  display: block !important;
+  height: 0 !important;
   min-height: 0 !important;
-  grid-template-rows: 0fr;
   overflow: hidden !important;
   opacity: 0;
   visibility: hidden;
   transition:
-    grid-template-rows 460ms cubic-bezier(0.4, 0, 1, 1),
+    height 460ms cubic-bezier(0.4, 0, 1, 1),
     opacity 240ms ease,
     visibility 0s linear 460ms;
-  will-change: grid-template-rows, opacity;
+  will-change: height, opacity;
 }
 
 #legacy-page-root .faq_dropdown .dropdown-list > .faq_dropdown_inner-wrapper {
@@ -453,13 +451,17 @@ html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_video video {
 }
 
 #legacy-page-root .faq_dropdown.casora-faq-open .dropdown-list {
-  grid-template-rows: 1fr;
+  height: var(--casora-faq-open-height, 0px) !important;
   opacity: 1;
   visibility: visible;
   transition:
-    grid-template-rows 460ms cubic-bezier(0, 0, 0.2, 1),
-    opacity 280ms ease 40ms,
+    height 460ms cubic-bezier(0.2, 0, 0.2, 1),
+    opacity 360ms ease,
     visibility 0s linear 0s;
+}
+
+#legacy-page-root .faq_dropdown.casora-faq-open.casora-faq-expanded .dropdown-list {
+  height: auto !important;
 }
 
 #legacy-page-root .faq_dropdown.casora-faq-open .dropdown-list > .faq_dropdown_inner-wrapper {
@@ -482,6 +484,7 @@ html[data-wf-page="654540f5b7838e4f3172a5f7"] .section_video video {
 @media (prefers-reduced-motion: reduce) {
   #legacy-page-root .faq_dropdown .dropdown-list,
   #legacy-page-root .faq_dropdown.casora-faq-open .dropdown-list,
+  #legacy-page-root .faq_dropdown.casora-faq-open.casora-faq-expanded .dropdown-list,
   #legacy-page-root .faq_dropdown .dropdown-list > .faq_dropdown_inner-wrapper,
   #legacy-page-root .faq_dropdown .faq_dropdown_icon-border {
     transition-duration: 0.01ms !important;

@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://www.casoradigital.com"),
   title: {
     default: "Casora Digital — Intelligence. Innovation. Impact.",
-    template: "%s — Casora Digital",
+    template: "%s | Casora Digital",
   },
   description:
     "Casora Digital creates purposeful brands, useful digital experiences and reliable software products.",

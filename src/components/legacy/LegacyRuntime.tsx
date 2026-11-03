@@ -22,6 +22,24 @@ function setupFaqAccordions() {
   const setOpen = (dropdown: HTMLElement, open: boolean) => {
     const toggle = dropdown.querySelector<HTMLElement>(".faq_dropdown_toggle");
     const list = dropdown.querySelector<HTMLElement>(".dropdown-list");
+    const content = list?.querySelector<HTMLElement>(".faq_dropdown_inner-wrapper");
+    const wasOpen = dropdown.classList.contains("casora-faq-open");
+
+    if (list && open) {
+      list.style.setProperty(
+        "--casora-faq-open-height",
+        `${content?.scrollHeight ?? 0}px`,
+      );
+    } else if (list && wasOpen) {
+      list.style.setProperty(
+        "--casora-faq-open-height",
+        `${list.getBoundingClientRect().height}px`,
+      );
+      dropdown.classList.remove("casora-faq-expanded");
+      list.getBoundingClientRect();
+    } else if (!open) {
+      dropdown.classList.remove("casora-faq-expanded");
+    }
 
     dropdown.classList.toggle("casora-faq-open", open);
     toggle?.classList.remove("w--open");
@@ -29,26 +47,48 @@ function setupFaqAccordions() {
     toggle?.setAttribute("aria-expanded", String(open));
   };
 
-  dropdowns.forEach((dropdown) => {
-    const toggle = dropdown.querySelector<HTMLElement>(".faq_dropdown_toggle");
-    if (!toggle) return;
+  const handleClick = (event: MouseEvent) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
 
+    const toggle = target.closest<HTMLElement>(".faq_dropdown_toggle");
+    const dropdown = toggle?.closest<HTMLElement>(".faq_dropdown");
+    if (!toggle || !dropdown || !dropdowns.includes(dropdown)) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+
+    const shouldOpen = !dropdown.classList.contains("casora-faq-open");
+    dropdowns.forEach((item) => setOpen(item, item === dropdown && shouldOpen));
+  };
+
+  document.addEventListener("click", handleClick, true);
+
+  dropdowns.forEach((dropdown) => {
     setOpen(dropdown, false);
 
-    const handleClick = (event: MouseEvent) => {
-      event.preventDefault();
-      event.stopPropagation();
-      event.stopImmediatePropagation();
-
-      const shouldOpen = !dropdown.classList.contains("casora-faq-open");
-      dropdowns.forEach((item) => setOpen(item, item === dropdown && shouldOpen));
+    const list = dropdown.querySelector<HTMLElement>(".dropdown-list");
+    const handleTransitionEnd = (event: TransitionEvent) => {
+      if (
+        event.target === list &&
+        event.propertyName === "height" &&
+        dropdown.classList.contains("casora-faq-open")
+      ) {
+        dropdown.classList.add("casora-faq-expanded");
+      }
     };
+    list?.addEventListener("transitionend", handleTransitionEnd);
 
-    toggle.addEventListener("click", handleClick, { capture: true });
-    cleanups.push(() => toggle.removeEventListener("click", handleClick, { capture: true }));
+    cleanups.push(() => {
+      list?.removeEventListener("transitionend", handleTransitionEnd);
+    });
   });
 
-  return () => cleanups.forEach((cleanup) => cleanup());
+  return () => {
+    document.removeEventListener("click", handleClick, true);
+    cleanups.forEach((cleanup) => cleanup());
+  };
 }
 
 export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
