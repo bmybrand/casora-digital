@@ -53,9 +53,12 @@ export function SiteClosing() {
 
             <nav aria-label="Services">
               <h3>Services</h3>
-              <a href="/services/web-design/">Web design</a>
-              <a href="/services/graphic-design/">Brand design</a>
-              <a href="/services/software-development/">Software</a>
+              <a href="/services/custom-software-development/">Custom software</a>
+              <a href="/services/cloud-solutions/">Cloud solutions</a>
+              <a href="/services/ai-machine-learning/">AI &amp; machine learning</a>
+              <a href="/services/digital-transformation/">Digital transformation</a>
+              <a href="/services/it-consulting/">IT consulting</a>
+              <a href="/services/managed-services/">Managed services</a>
             </nav>
           </div>
 

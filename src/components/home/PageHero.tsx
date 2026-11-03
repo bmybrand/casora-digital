@@ -5,6 +5,8 @@ import { createPortal } from "react-dom";
 
 import type { PageRoute } from "../pages/page-registry";
 import { CurrentHero, type CurrentHeroProps } from "./HomeHero";
+import { ServiceDetail, type ServiceDetailKind } from "./ServiceDetail";
+import { ServicesOverview } from "./ServicesOverview";
 
 const heroSelector = [
   "#legacy-page-root .about_hero",
@@ -114,6 +116,60 @@ const pageHeroes: Record<Exclude<PageRoute, "">, CurrentHeroProps> = {
     secondaryLabel: "All services",
     secondaryHref: "/services/",
   },
+  "services/custom-software-development": {
+    eyebrow: "Custom software development",
+    title: "Software built around real work.",
+    summary: "We design and develop dependable applications, portals and tools shaped around your teams, customers and operations.",
+    primaryLabel: "Plan a project",
+    primaryHref: "/contact-us/",
+    secondaryLabel: "All services",
+    secondaryHref: "/services/",
+  },
+  "services/cloud-solutions": {
+    eyebrow: "Cloud solutions",
+    title: "Cloud systems ready to scale.",
+    summary: "Secure cloud architecture, practical migration and reliable operations give growing products a stronger foundation.",
+    primaryLabel: "Plan a project",
+    primaryHref: "/contact-us/",
+    secondaryLabel: "All services",
+    secondaryHref: "/services/",
+  },
+  "services/ai-machine-learning": {
+    eyebrow: "AI & machine learning",
+    title: "Intelligence made useful.",
+    summary: "We turn data and machine learning into focused tools that reduce repetitive work and support better decisions.",
+    primaryLabel: "Plan a project",
+    primaryHref: "/contact-us/",
+    secondaryLabel: "All services",
+    secondaryHref: "/services/",
+  },
+  "services/digital-transformation": {
+    eyebrow: "Digital transformation",
+    title: "Transform systems. Move forward.",
+    summary: "We connect strategy, experience and technology to modernise important workflows without disrupting the work that matters.",
+    primaryLabel: "Plan a project",
+    primaryHref: "/contact-us/",
+    secondaryLabel: "All services",
+    secondaryHref: "/services/",
+  },
+  "services/it-consulting": {
+    eyebrow: "IT consulting",
+    title: "Clear direction for complex technology.",
+    summary: "Practical technical guidance helps teams prioritise investment, reduce risk and make confident decisions about what comes next.",
+    primaryLabel: "Talk to an expert",
+    primaryHref: "/contact-us/",
+    secondaryLabel: "All services",
+    secondaryHref: "/services/",
+  },
+  "services/managed-services": {
+    eyebrow: "Managed services",
+    title: "Reliable systems. Continuously improved.",
+    summary: "Proactive support, monitoring and maintenance keep essential digital services secure, stable and ready for change.",
+    primaryLabel: "Talk to an expert",
+    primaryHref: "/contact-us/",
+    secondaryLabel: "All services",
+    secondaryHref: "/services/",
+  },
   "services/web-design": {
     eyebrow: "The Casora standard",
     title: "Web Create!",
@@ -197,22 +253,51 @@ const pageHeroes: Record<Exclude<PageRoute, "">, CurrentHeroProps> = {
   },
 };
 
+const serviceDetailKinds: Partial<
+  Record<Exclude<PageRoute, "">, ServiceDetailKind>
+> = {
+  "services/custom-software-development": "software",
+  "services/cloud-solutions": "cloud",
+  "services/ai-machine-learning": "ai",
+  "services/digital-transformation": "transformation",
+  "services/it-consulting": "consulting",
+  "services/managed-services": "managed",
+  "services/web-design": "web",
+  "services/graphic-design": "brand",
+  "services/software-development": "software",
+};
+
 export function PageHero({ route }: { route: Exclude<PageRoute, ""> }) {
   const [mount, setMount] = useState<HTMLElement | null>(null);
+  const detailKind = serviceDetailKinds[route] ?? null;
 
   useEffect(() => {
     const legacyHero = document.querySelector<HTMLElement>(heroSelector);
     if (!legacyHero) return;
 
+    const legacyRoot = document.getElementById("legacy-page-root");
+    if (detailKind && legacyRoot) legacyRoot.dataset.casoraServiceDetail = "true";
+
     const slot = document.createElement("div");
     slot.id = "casora-page-hero-slot";
     legacyHero.replaceWith(slot);
-    setMount(slot);
+    const animationFrame = requestAnimationFrame(() => setMount(slot));
 
     return () => {
+      cancelAnimationFrame(animationFrame);
+      if (legacyRoot) delete legacyRoot.dataset.casoraServiceDetail;
       if (slot.isConnected) slot.replaceWith(legacyHero);
     };
-  }, [route]);
+  }, [detailKind, route]);
 
-  return mount ? createPortal(<CurrentHero {...pageHeroes[route]} />, mount) : null;
+  return mount
+    ? createPortal(
+        <>
+          <CurrentHero {...pageHeroes[route]} />
+          {route === "services" ? <ServicesOverview /> : null}
+          {detailKind ? <ServiceDetail kind={detailKind} /> : null}
+        </>,
+        mount,
+      )
+    : null;
 }

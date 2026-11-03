@@ -91,6 +91,101 @@ function setupFaqAccordions() {
   };
 }
 
+const serviceMenuItems = [
+  {
+    title: "Custom Software Development",
+    href: "/services/custom-software-development/",
+    icon: '<rect class="casora-menu-icon-fill" x="6" y="8" width="28" height="24" rx="5"/><path d="M6 15h28M15 20l-4 4 4 4M25 20l4 4-4 4M22 19l-4 10"/><circle cx="11" cy="11.5" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="11.5" r="1" fill="currentColor" stroke="none"/>',
+  },
+  {
+    title: "Cloud Solutions",
+    href: "/services/cloud-solutions/",
+    icon: '<path class="casora-menu-icon-fill" d="M10 30h20a7 7 0 0 0 .2-14A10 10 0 0 0 11 14.5 8 8 0 0 0 10 30Z"/><path d="M10 30h20a7 7 0 0 0 .2-14A10 10 0 0 0 11 14.5 8 8 0 0 0 10 30ZM20 27V16m-5 5 5-5 5 5"/>',
+  },
+  {
+    title: "AI & Machine Learning",
+    href: "/services/ai-machine-learning/",
+    icon: '<rect class="casora-menu-icon-fill" x="11" y="11" width="18" height="18" rx="4"/><rect x="11" y="11" width="18" height="18" rx="4"/><path d="M15 6v5M25 6v5M15 29v5M25 29v5M6 15h5M6 25h5M29 15h5M29 25h5"/><circle cx="16.5" cy="18" r="2"/><circle cx="24" cy="16.5" r="2"/><circle cx="22" cy="24" r="2"/><path d="m18.5 17.5 3.5-.7m1 2-.5 3.2M18 19.5l2.5 3"/>',
+  },
+  {
+    title: "Digital Transformation",
+    href: "/services/digital-transformation/",
+    icon: '<path class="casora-menu-icon-fill" d="m20 14 6 6-6 6-6-6 6-6Z"/><path d="M8 12h19l-4-4M32 28H13l4 4M27 12a12 12 0 0 1 3 14M13 28a12 12 0 0 1-3-14"/><path d="m20 14 6 6-6 6-6-6 6-6Z"/>',
+  },
+  {
+    title: "IT Consulting",
+    href: "/services/it-consulting/",
+    icon: '<path class="casora-menu-icon-fill" d="M6 20h6v10H6zM28 20h6v10h-6z"/><path d="M8 21v-3a12 12 0 0 1 24 0v3M8 20H5v10h7V20H8ZM32 20h3v10h-7V20h4ZM32 30v1a4 4 0 0 1-4 4h-6"/><circle cx="19" cy="35" r="2" fill="currentColor"/>',
+  },
+  {
+    title: "Managed Services",
+    href: "/services/managed-services/",
+    icon: '<path class="casora-menu-icon-fill" d="M20 4 33 9v9c0 8-5 14-13 18C12 32 7 26 7 18V9l13-5Z"/><path d="M20 4 33 9v9c0 8-5 14-13 18C12 32 7 26 7 18V9l13-5Z"/><circle cx="20" cy="19" r="5"/><path d="M20 11v3M20 24v3M12 19h3M25 19h3M14.5 13.5l2 2M23.5 22.5l2 2M25.5 13.5l-2 2M16.5 22.5l-2 2"/>',
+  },
+] as const;
+
+function setupServiceMenu() {
+  const dropdowns = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      "#legacy-page-root .nav-services_desktop-dropdown",
+    ),
+  );
+  const restorations: Array<() => void> = [];
+
+  dropdowns.forEach((dropdown) => {
+    const list = dropdown.querySelector<HTMLElement>(".nav-dropdown_list");
+    const heading = dropdown.querySelector<HTMLElement>(
+      ".nav-dropdown_header > div:first-child",
+    );
+    const toggle = dropdown
+      .closest<HTMLElement>(".nav-dropdown")
+      ?.querySelector<HTMLElement>(":scope > .nav-link > div");
+    if (!list) return;
+
+    const originalList = list.innerHTML;
+    const originalHeading = heading?.textContent ?? "";
+    const originalToggle = toggle?.textContent ?? "";
+
+    list.innerHTML = serviceMenuItems
+      .map(
+        (service) => `
+          <li class="nav-dropdown_list-item">
+            <a href="${service.href}" class="nav-dropdown_link w-inline-block">
+              <div class="nav-dropdown_link-svg-wrapper">
+                <svg class="casora-menu-service-icon" viewBox="0 0 40 40" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  ${service.icon}
+                </svg>
+              </div>
+              <div><div class="nav-dropdown_link-heading">${service.title}</div></div>
+            </a>
+          </li>`,
+      )
+      .join("");
+    if (heading) heading.textContent = "Services";
+    if (toggle) toggle.textContent = "Services";
+
+    restorations.push(() => {
+      list.innerHTML = originalList;
+      if (heading) heading.textContent = originalHeading;
+      if (toggle) toggle.textContent = originalToggle;
+    });
+  });
+
+  document
+    .querySelectorAll<HTMLElement>(
+      "#legacy-page-root .nav-link.hide-nav-link-on-dkestop .nav-link_heading",
+    )
+    .forEach((heading) => {
+      const original = heading.textContent ?? "";
+      heading.textContent = "Services";
+      restorations.push(() => {
+        heading.textContent = original;
+      });
+    });
+
+  return () => restorations.forEach((restore) => restore());
+}
+
 export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
   useEffect(() => {
     const root = document.documentElement;
@@ -102,6 +197,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
     const added: HTMLScriptElement[] = [];
     const originalConsoleError = console.error;
     const cleanupFaqAccordions = setupFaqAccordions();
+    const cleanupServiceMenu = setupServiceMenu();
 
     const patchedConsoleError = (...args: unknown[]) => {
       const primaryMessage =
@@ -151,6 +247,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
       cancelled = true;
       added.forEach((script) => script.remove());
       cleanupFaqAccordions();
+      cleanupServiceMenu();
       if (console.error === patchedConsoleError) {
         console.error = originalConsoleError;
       }

@@ -31,6 +31,30 @@ export const pageDocuments = {
   services: servicesDocument,
   "services/graphic-design": graphicDesignDocument,
   "services/software-development": softwareDevelopmentDocument,
+  "services/custom-software-development": {
+    ...softwareDevelopmentDocument,
+    title: "Custom Software Development | Casora Digital",
+  },
+  "services/cloud-solutions": {
+    ...softwareDevelopmentDocument,
+    title: "Cloud Solutions | Casora Digital",
+  },
+  "services/ai-machine-learning": {
+    ...softwareDevelopmentDocument,
+    title: "AI & Machine Learning | Casora Digital",
+  },
+  "services/digital-transformation": {
+    ...softwareDevelopmentDocument,
+    title: "Digital Transformation | Casora Digital",
+  },
+  "services/it-consulting": {
+    ...softwareDevelopmentDocument,
+    title: "IT Consulting | Casora Digital",
+  },
+  "services/managed-services": {
+    ...softwareDevelopmentDocument,
+    title: "Managed Services | Casora Digital",
+  },
   "services/web-design": webDesignDocument,
   webflow: webflowDocument,
   work: workDocument,
