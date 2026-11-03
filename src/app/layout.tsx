@@ -42,7 +42,7 @@ const extensionAttributeCleanup = `
 `;
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://casoradigital.com"),
+  metadataBase: new URL("https://www.casoradigital.com"),
   title: {
     default: "Casora Digital — Intelligence. Innovation. Impact.",
     template: "%s — Casora Digital",
@@ -64,7 +64,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: extensionAttributeCleanup }}
         />
         <link
-          href="/6501f1891917bde75ab542ee/css/phunk-creative.shared.e926a3d59.min.css"
+          href="/6501f1891917bde75ab542ee/css/casora-runtime.shared.e926a3d59.min.css"
           rel="stylesheet"
         />
         <link href="/assets/casora-layout.css" rel="stylesheet" />

@@ -1,4 +1,5 @@
 import { HomeHero } from "../home/HomeHero";
+import { PageHero } from "../home/PageHero";
 import { getPageDocument, type PageRoute } from "../pages/page-registry";
 import { SiteClosing } from "../site/SiteClosing";
 import { LegacyRuntime } from "./LegacyRuntime";
@@ -17,7 +18,7 @@ export function LegacyPage({ route }: LegacyPageProps) {
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: document.body }}
       />
-      {route === "" ? <HomeHero /> : null}
+      {route === "" ? <HomeHero /> : <PageHero route={route} />}
       <SiteClosing />
       <LegacyRuntime pageId={document.pageId} scripts={document.scripts} />
     </>

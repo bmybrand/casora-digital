@@ -1,15 +1,29 @@
 export function SiteClosing() {
   return (
     <>
-      <section className="casora-closing-cta" aria-labelledby="casora-closing-title">
-        <div className="casora-closing-cta__inner">
-          <p className="casora-closing-cta__eyebrow">Ready to grow?</p>
-          <h2 id="casora-closing-title">
-            Let&rsquo;s make the
-            <br />
-            next move count.
-          </h2>
-          <a href="/contact-us/">Talk to Casora</a>
+      <section className="casora-closing-cta home_cta" aria-labelledby="casora-closing-title">
+        <div className="container-large">
+          <div
+            data-w-id="5e90a721-54cf-6f17-1c78-7353063fc75b"
+            className="home_cta_card"
+          >
+            <h2 id="casora-closing-title" className="heading_standard">
+              Let&rsquo;s get to <span className="span_gradient">work.</span>
+            </h2>
+            <p>
+              We&rsquo;re ready to get started on your next creative project. All you need to do
+              is hit the button below.
+            </p>
+            <a href="/contact-us/" className="button is-secondary w-button">
+              Talk to us
+            </a>
+            <img
+              src="/assets/casora-mark-white-blue-circle.png"
+              loading="lazy"
+              alt=""
+              className="graphic_brand-logo is-footer"
+            />
+          </div>
         </div>
       </section>
 
@@ -46,7 +60,13 @@ export function SiteClosing() {
           </div>
 
           <div className="casora-site-footer__base">
-            <span>© 2026 Casora Digital</span>
+            <span>&copy; 2026 Casora Digital</span>
+            <div className="casora-site-footer__legal">
+              <a href="https://www.casoradigital.com/privacy-policy">Privacy Policy</a>
+              <a href="https://www.casoradigital.com/terms-and-conditions">
+                Terms &amp; Conditions
+              </a>
+            </div>
             <span>Intelligence. Innovation. Impact.</span>
           </div>
         </div>

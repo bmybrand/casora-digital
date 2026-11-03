@@ -3,53 +3,60 @@
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
-import MicroSlats from "../react-bits/MicroSlats";
+import { HeroBackdrop } from "./HeroBackdrop";
 
-function HeroContent() {
+export type CurrentHeroProps = {
+  eyebrow: string;
+  title: string;
+  summary: string;
+  primaryLabel: string;
+  primaryHref: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+};
+
+function AccentTitle({ title }: { title: string }) {
+  const splitAt = title.lastIndexOf(" ");
+  if (splitAt < 0) return <em>{title}</em>;
+
+  return (
+    <>
+      {title.slice(0, splitAt)} <em>{title.slice(splitAt + 1)}</em>
+    </>
+  );
+}
+
+export function CurrentHero({
+  eyebrow,
+  title,
+  summary,
+  primaryLabel,
+  primaryHref,
+  secondaryLabel,
+  secondaryHref,
+}: CurrentHeroProps) {
   return (
     <section className="casora-current-hero">
-      <div className="casora-current-hero__slats" aria-hidden="true">
-        <MicroSlats
-          preset="swell"
-          color="#1478ff"
-          glintColor="#2de9e7"
-          backgroundColor="#02040a"
-          slatWidth={10}
-          slatHeight={25}
-          gap={3}
-          roundness={0.76}
-          cursorStrength={1.15}
-          cursorSize={56}
-          swirl={0.12}
-          trail={1.5}
-          lean={0.08}
-          interactive
-          intro
-        />
-      </div>
-      <div className="casora-current-hero__shade" aria-hidden="true" />
+      <HeroBackdrop />
       <div className="casora-current-hero__copy">
-        <p className="casora-current-hero__eyebrow">Independent digital studio</p>
-        <h1>
-          Clear work creates <em>lasting momentum.</em>
-        </h1>
-        <p className="casora-current-hero__summary">
-          Casora combines brand thinking, product design and engineering to turn ambitious
-          ideas into useful digital experiences.
-        </p>
+        <p className="casora-current-hero__eyebrow">{eyebrow}</p>
+        <h1><AccentTitle title={title} /></h1>
+        <p className="casora-current-hero__summary">{summary}</p>
         <div className="casora-current-hero__actions">
           <a
             className="casora-current-hero__button casora-current-hero__button--primary"
-            href="/contact-us/"
+            href={primaryHref}
           >
-            Start a project
+            {primaryLabel}
           </a>
-          <a
-            className="casora-current-hero__button casora-current-hero__button--ghost"
-            href="/work/"
-          >
-            See our work
-          </a>
+          {secondaryLabel && secondaryHref ? (
+            <a
+              className="casora-current-hero__button casora-current-hero__button--ghost"
+              href={secondaryHref}
+            >
+              {secondaryLabel}
+            </a>
+          ) : null}
         </div>
       </div>
       <div className="casora-current-hero__note">
@@ -72,5 +79,16 @@ export function HomeHero() {
     setMount(target);
   }, []);
 
-  return mount ? createPortal(<HeroContent />, mount) : null;
+  return mount ? createPortal(
+    <CurrentHero
+      eyebrow="Independent digital studio"
+      title="Clear work creates lasting momentum."
+      summary="Casora combines brand thinking, product design and engineering to turn ambitious ideas into useful digital experiences."
+      primaryLabel="Start a project"
+      primaryHref="/contact-us/"
+      secondaryLabel="See our work"
+      secondaryHref="/work/"
+    />,
+    mount,
+  ) : null;
 }

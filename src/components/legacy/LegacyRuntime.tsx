@@ -64,7 +64,10 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
       }
 
       if (cancelled) return;
-      window.Webflow?.ready?.();
+      const ready = window.Webflow?.ready;
+      if (typeof ready === "function") {
+        ready.call(window.Webflow);
+      }
     };
 
     void loadScripts();

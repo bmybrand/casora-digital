@@ -1,7 +1,7 @@
 import { aboutUsDocument } from "./documents/about-us";
-import { awwwardsArticleDocument } from "./documents/article-awwwards";
-import { britishRailArticleDocument } from "./documents/article-british-rail";
-import { webEvolutionArticleDocument } from "./documents/article-web-evolution";
+import { designRecognitionArticleDocument } from "./documents/article-design-recognition";
+import { brandSystemsArticleDocument } from "./documents/article-brand-systems";
+import { digitalProductsArticleDocument } from "./documents/article-digital-products";
 import { contactUsDocument } from "./documents/contact-us";
 import { homeDocument } from "./documents/home";
 import { newsDocument } from "./documents/news";
@@ -22,9 +22,9 @@ import { mobillioDocument } from "./documents/work-mobillio";
 export const pageDocuments = {
   "": homeDocument,
   "about-us": aboutUsDocument,
-  "article/60-years-and-still-going-strong-the-british-rail-logo": britishRailArticleDocument,
-  "article/awwwards-com-gives-phunk-the-thumbs-up": awwwardsArticleDocument,
-  "article/the-evolution-of-web-design": webEvolutionArticleDocument,
+  "article/building-a-brand-system-that-scales": brandSystemsArticleDocument,
+  "article/digital-design-recognition": designRecognitionArticleDocument,
+  "article/designing-digital-products-for-change": digitalProductsArticleDocument,
   "contact-us": contactUsDocument,
   news: newsDocument,
   pricing: pricingDocument,
