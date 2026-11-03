@@ -32,7 +32,7 @@ export function SiteClosing() {
           <div className="casora-site-footer__grid">
             <div className="casora-site-footer__brand">
               <a href="/" aria-label="Casora Digital home">
-                <img src="/assets/casora-header-logo.png" alt="Casora Digital" />
+                <img src="/assets/casora-footer-logo.png" alt="Casora Digital — Intelligence. Innovation. Impact." />
               </a>
               <p>Purposeful brands, useful products and digital systems built to move ideas forward.</p>
             </div>
