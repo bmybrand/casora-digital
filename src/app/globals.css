@@ -45,7 +45,7 @@ body {
 
 .casora-closing-cta {
   position: relative;
-  padding-top: clamp(72px, 8vw, 120px);
+  padding-top: clamp(120px, 12vw, 190px);
   padding-bottom: 3.71875rem;
   background: #030404;
 }
@@ -234,7 +234,7 @@ body {
 
 @media (max-width: 600px) {
   .casora-closing-cta {
-    padding-top: 56px;
+    padding-top: 88px;
   }
 
   .casora-site-footer__inner {

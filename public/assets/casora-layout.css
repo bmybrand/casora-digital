@@ -117,6 +117,11 @@
 }
 
 /* Cinematic homepage testimonial replacing the exported review carousel. */
+#legacy-page-root[data-casora-home="true"] .home_clients,
+#legacy-page-root[data-casora-home="true"] .home_clients.casora-testimonial-host {
+  display: none !important;
+}
+
 .casora-testimonial-host {
   position: relative !important;
   display: block !important;

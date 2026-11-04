@@ -16,6 +16,7 @@ export function LegacyPage({ route }: LegacyPageProps) {
     <>
       <div
         id="legacy-page-root"
+        data-casora-home={route === "" ? "true" : undefined}
         suppressHydrationWarning
         dangerouslySetInnerHTML={{ __html: document.body }}
       />

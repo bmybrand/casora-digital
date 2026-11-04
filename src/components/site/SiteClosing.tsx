@@ -1,7 +1,7 @@
 export function SiteClosing() {
   return (
     <>
-      <section className="casora-closing-cta home_cta" aria-labelledby="casora-closing-title">
+      <section className="casora-closing-cta" aria-labelledby="casora-closing-title">
         <div className="container-large">
           <div
             data-w-id="5e90a721-54cf-6f17-1c78-7353063fc75b"
