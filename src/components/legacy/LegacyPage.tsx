@@ -1,4 +1,5 @@
 import { HomeHero } from "../home/HomeHero";
+import { HomeTestimonial } from "../home/HomeTestimonial";
 import { PageHero } from "../home/PageHero";
 import { getPageDocument, type PageRoute } from "../pages/page-registry";
 import { SiteClosing } from "../site/SiteClosing";
@@ -19,6 +20,7 @@ export function LegacyPage({ route }: LegacyPageProps) {
         dangerouslySetInnerHTML={{ __html: document.body }}
       />
       {route === "" ? <HomeHero /> : <PageHero route={route} />}
+      {route === "" ? <HomeTestimonial /> : null}
       <SiteClosing />
       <LegacyRuntime pageId={document.pageId} scripts={document.scripts} />
     </>

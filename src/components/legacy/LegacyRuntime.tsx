@@ -13,6 +13,50 @@ declare global {
   }
 }
 
+const legacyScriptLoads = new Map<string, Promise<void>>();
+
+function loadLegacyScript(source: string) {
+  const existingLoad = legacyScriptLoads.get(source);
+  if (existingLoad) return existingLoad;
+
+  const load = new Promise<void>((resolve) => {
+    const existingScript = Array.from(
+      document.querySelectorAll<HTMLScriptElement>("script[data-legacy-runtime='true']"),
+    ).find((script) => script.getAttribute("src") === source);
+    if (existingScript?.dataset.legacyLoaded === "true") {
+      resolve();
+      return;
+    }
+
+    // Scripts left by an earlier hot-reload pass have already executed, but
+    // predate the loaded marker. Reuse them instead of executing Webflow twice.
+    if (existingScript && !existingScript.dataset.legacySource) {
+      existingScript.dataset.legacySource = source;
+      existingScript.dataset.legacyLoaded = "true";
+      resolve();
+      return;
+    }
+
+    const script = existingScript ?? document.createElement("script");
+    script.src = source;
+    script.async = false;
+    script.dataset.legacyRuntime = "true";
+    script.dataset.legacySource = source;
+
+    const finish = () => {
+      script.dataset.legacyLoaded = "true";
+      resolve();
+    };
+
+    script.addEventListener("load", finish, { once: true });
+    script.addEventListener("error", finish, { once: true });
+    if (!existingScript) document.body.appendChild(script);
+  });
+
+  legacyScriptLoads.set(source, load);
+  return load;
+}
+
 function setupFaqAccordions() {
   const dropdowns = Array.from(
     document.querySelectorAll<HTMLElement>("#legacy-page-root .faq_dropdown"),
@@ -186,22 +230,151 @@ function setupServiceMenu() {
   return () => restorations.forEach((restore) => restore());
 }
 
+function setupNavbarScrollState() {
+  const navbar = document.querySelector<HTMLElement>("#legacy-page-root .navbar");
+  if (!navbar) return () => undefined;
+
+  let frame = 0;
+  let ticking = false;
+  let lastScrollY = Math.max(window.scrollY, 0);
+
+  const update = () => {
+    const scrollY = Math.max(window.scrollY, 0);
+    const delta = scrollY - lastScrollY;
+    const menuOpen = document.documentElement.classList.contains("casora-menu-open");
+    const compact = scrollY > 24;
+    let visible = navbar.dataset.casoraNavVisible !== "false";
+
+    if (menuOpen || scrollY <= 24) visible = true;
+    else if (delta > 4 && scrollY > 120) visible = false;
+    else if (delta < -4) visible = true;
+
+    navbar.dataset.casoraNavScrolled = String(compact);
+    navbar.dataset.casoraNavVisible = String(visible);
+    lastScrollY = scrollY;
+    ticking = false;
+  };
+
+  const handleScroll = () => {
+    if (ticking) return;
+    frame = window.requestAnimationFrame(update);
+    ticking = true;
+  };
+
+  navbar.dataset.casoraNavVisible = "true";
+  update();
+  window.addEventListener("scroll", handleScroll, { passive: true });
+
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+    window.cancelAnimationFrame(frame);
+    delete navbar.dataset.casoraNavScrolled;
+    delete navbar.dataset.casoraNavVisible;
+  };
+}
+
 function setupResponsiveNavigation() {
   const navbar = document.querySelector<HTMLElement>("#legacy-page-root .navbar");
   const button = navbar?.querySelector<HTMLElement>(".menu-button");
   const menu = navbar?.querySelector<HTMLElement>(".nav-menu");
   if (!navbar || !button || !menu) return () => undefined;
 
+  const serviceLinks = serviceMenuItems
+    .map(
+      (service) => `
+        <li class="casora-drawer__item">
+          <a class="casora-drawer__link casora-drawer__service-link" href="${service.href}">
+            <span>${service.title}</span>
+            <span class="casora-drawer__arrow" aria-hidden="true">&#8599;</span>
+          </a>
+        </li>`,
+    )
+    .join("");
+
+  menu.insertAdjacentHTML(
+    "beforeend",
+    `
+    <div class="casora-drawer" aria-label="Mobile navigation">
+      <div class="casora-drawer__header">
+        <a class="casora-drawer__brand" href="/" aria-label="Casora Digital home">
+          <img src="/assets/casora-header-logo.png" alt="Casora Digital" />
+        </a>
+        <button class="casora-drawer__close" type="button" aria-label="Close navigation menu">
+          <span aria-hidden="true"></span>
+        </button>
+      </div>
+      <div class="casora-drawer__viewport">
+        <section class="casora-drawer__panel casora-drawer__panel--main" data-casora-menu-panel="main">
+          <p class="casora-drawer__eyebrow">Explore</p>
+          <ul class="casora-drawer__list" role="list">
+            <li class="casora-drawer__item"><a class="casora-drawer__link" href="/"><span>Home</span><span class="casora-drawer__arrow" aria-hidden="true">&#8599;</span></a></li>
+            <li class="casora-drawer__item"><a class="casora-drawer__link" href="/about-us/"><span>About us</span><span class="casora-drawer__arrow" aria-hidden="true">&#8599;</span></a></li>
+            <li class="casora-drawer__item">
+              <button class="casora-drawer__link casora-drawer__enter" type="button" data-casora-menu-enter="services" aria-controls="casora-services-panel">
+                <span>Services</span><span class="casora-drawer__arrow" aria-hidden="true">&#8594;</span>
+              </button>
+            </li>
+            <li class="casora-drawer__item"><a class="casora-drawer__link" href="/work/"><span>Casework</span><span class="casora-drawer__arrow" aria-hidden="true">&#8599;</span></a></li>
+            <li class="casora-drawer__item"><a class="casora-drawer__link" href="/news/"><span>Ideas</span><span class="casora-drawer__arrow" aria-hidden="true">&#8599;</span></a></li>
+            <li class="casora-drawer__item"><a class="casora-drawer__link" href="/webflow/"><span>No-Code</span><span class="casora-drawer__arrow" aria-hidden="true">&#8599;</span></a></li>
+          </ul>
+        </section>
+        <section id="casora-services-panel" class="casora-drawer__panel casora-drawer__panel--services" data-casora-menu-panel="services" aria-hidden="true">
+          <button class="casora-drawer__back" type="button" data-casora-menu-back>
+            <span aria-hidden="true">&#8592;</span> Back
+          </button>
+          <p class="casora-drawer__eyebrow">Our services</p>
+          <ul class="casora-drawer__list casora-drawer__list--services" role="list">
+            ${serviceLinks}
+          </ul>
+          <a class="casora-drawer__all-services" href="/services/">View all services <span aria-hidden="true">&#8599;</span></a>
+        </section>
+      </div>
+      <div class="casora-drawer__footer">
+        <p>Have a project in mind?</p>
+        <a href="/contact-us/">Start a project <span aria-hidden="true">&#8599;</span></a>
+      </div>
+    </div>`,
+  );
+
+  const drawer = menu.querySelector<HTMLElement>(".casora-drawer");
+  if (!drawer) return () => undefined;
+
+  const backdrop = document.createElement("button");
+  backdrop.type = "button";
+  backdrop.className = "casora-drawer-backdrop";
+  backdrop.setAttribute("aria-label", "Close navigation menu");
+  navbar.appendChild(backdrop);
+
+  const mainPanel = menu.querySelector<HTMLElement>('[data-casora-menu-panel="main"]');
+  const servicesPanel = menu.querySelector<HTMLElement>(
+    '[data-casora-menu-panel="services"]',
+  );
+
+  const showMainPanel = () => {
+    menu.removeAttribute("data-casora-submenu");
+    mainPanel?.setAttribute("aria-hidden", "false");
+    servicesPanel?.setAttribute("aria-hidden", "true");
+  };
+
   const closeMenu = () => {
     menu.removeAttribute("data-nav-menu-open");
+    backdrop.removeAttribute("data-nav-menu-open");
     button.classList.remove("w--open");
     button.setAttribute("aria-expanded", "false");
+    button.setAttribute("aria-label", "Open navigation menu");
+    document.documentElement.classList.remove("casora-menu-open");
+    showMainPanel();
   };
 
   const openMenu = () => {
     menu.setAttribute("data-nav-menu-open", "");
+    backdrop.setAttribute("data-nav-menu-open", "");
     button.classList.add("w--open");
     button.setAttribute("aria-expanded", "true");
+    button.setAttribute("aria-label", "Close navigation menu");
+    document.documentElement.classList.add("casora-menu-open");
+    navbar.dataset.casoraNavVisible = "true";
   };
 
   const handleClick = (event: MouseEvent) => {
@@ -218,11 +391,32 @@ function setupResponsiveNavigation() {
       return;
     }
 
-    if (target.closest(".close_menu") && menu.contains(target)) {
+    if (
+      target.closest(".casora-drawer__close") ||
+      target.closest(".casora-drawer-backdrop")
+    ) {
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
       closeMenu();
+      return;
+    }
+
+    if (target.closest("[data-casora-menu-enter='services']")) {
+      event.preventDefault();
+      menu.setAttribute("data-casora-submenu", "services");
+      mainPanel?.setAttribute("aria-hidden", "true");
+      servicesPanel?.setAttribute("aria-hidden", "false");
+      servicesPanel?.querySelector<HTMLElement>(".casora-drawer__back")?.focus();
+      return;
+    }
+
+    if (target.closest("[data-casora-menu-back]")) {
+      event.preventDefault();
+      showMainPanel();
+      menu
+        .querySelector<HTMLElement>("[data-casora-menu-enter='services']")
+        ?.focus();
       return;
     }
 
@@ -253,6 +447,8 @@ function setupResponsiveNavigation() {
 
   return () => {
     closeMenu();
+    drawer.remove();
+    backdrop.remove();
     document.removeEventListener("click", handleClick, true);
     document.removeEventListener("keydown", handleKeyDown);
     window.removeEventListener("resize", handleResize);
@@ -267,10 +463,10 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
     root.dataset.wfPage = pageId;
 
     let cancelled = false;
-    const added: HTMLScriptElement[] = [];
     const originalConsoleError = console.error;
     const cleanupFaqAccordions = setupFaqAccordions();
     const cleanupServiceMenu = setupServiceMenu();
+    const cleanupNavbarScrollState = setupNavbarScrollState();
     const cleanupResponsiveNavigation = setupResponsiveNavigation();
 
     const patchedConsoleError = (...args: unknown[]) => {
@@ -298,16 +494,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
       for (const source of scripts) {
         if (cancelled) return;
 
-        await new Promise<void>((resolve) => {
-          const script = document.createElement("script");
-          script.src = source;
-          script.async = false;
-          script.dataset.legacyRuntime = "true";
-          script.addEventListener("load", () => resolve(), { once: true });
-          script.addEventListener("error", () => resolve(), { once: true });
-          document.body.appendChild(script);
-          added.push(script);
-        });
+        await loadLegacyScript(source);
 
         if (cancelled) return;
       }
@@ -319,9 +506,9 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
 
     return () => {
       cancelled = true;
-      added.forEach((script) => script.remove());
       cleanupFaqAccordions();
       cleanupServiceMenu();
+      cleanupNavbarScrollState();
       cleanupResponsiveNavigation();
       if (console.error === patchedConsoleError) {
         console.error = originalConsoleError;

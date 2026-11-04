@@ -36,25 +36,231 @@
   height: 56px !important;
 }
 
-/* One cohesive navigation surface for logo, links and primary action. */
+/* Large floating glass bar that contracts into a compact sticky bar on scroll. */
 .navbar {
-  padding: 14px 20px !important;
+  position: fixed !important;
+  inset: 0 0 auto !important;
+  z-index: 1000 !important;
+  padding: 24px 3.1vw 0 !important;
   background: transparent !important;
+  transform: translate3d(0, 0, 0) !important;
+  transition:
+    padding 500ms ease-out,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  will-change: padding, transform;
 }
 
 .navbar .container-large.is-navbar.is-main {
-  width: min(calc(100% - 24px), 1440px) !important;
-  min-height: 74px;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 96px;
   margin-inline: auto !important;
-  padding: 8px 10px 8px 18px !important;
-  border: 1px solid rgba(107, 114, 128, 0.36);
-  border-radius: 18px;
-  background: rgba(3, 7, 12, 0.88);
+  padding: 10px 14px 10px 28px !important;
+  border: 1px solid rgba(245, 247, 250, 0.12);
+  border-radius: 24px;
+  background: rgba(245, 247, 250, 0.08);
   box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.3),
+    0 24px 60px rgba(0, 0, 0, 0.28),
     inset 0 1px 0 rgba(245, 247, 250, 0.06);
   -webkit-backdrop-filter: blur(18px) saturate(135%);
   backdrop-filter: blur(18px) saturate(135%);
+  transition:
+    min-height 500ms ease-out,
+    border-radius 500ms ease-out,
+    background-color 500ms ease-out,
+    border-color 500ms ease-out,
+    padding 500ms ease-out,
+    box-shadow 500ms ease-out;
+}
+
+.navbar .brand.is-navbar {
+  transform: scale(1) !important;
+  transform-origin: left center;
+  transition: transform 500ms ease-out !important;
+}
+
+.navbar[data-casora-nav-visible="false"] {
+  pointer-events: none !important;
+  transform: translate3d(0, calc(-100% - 2px), 0) !important;
+}
+
+.navbar[data-casora-nav-scrolled="true"] {
+  padding: 0 !important;
+}
+
+.navbar[data-casora-nav-scrolled="true"] .container-large.is-navbar.is-main {
+  min-height: 80px;
+  padding-inline: 3.1vw !important;
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: rgba(107, 114, 128, 0.38);
+  border-left-color: transparent;
+  border-radius: 0;
+  background: rgba(3, 7, 12, 0.96);
+  box-shadow: 0 12px 35px rgba(0, 123, 255, 0.1);
+}
+
+.navbar[data-casora-nav-scrolled="true"] .brand.is-navbar {
+  transform: scale(0.82) !important;
+}
+
+@media screen and (min-width: 992px) {
+  .navbar[data-casora-nav-scrolled="true"] .button.is-navbar {
+    min-height: 40px;
+  }
+}
+
+/* The off-canvas navigation is only available at the collapsed breakpoint. */
+.navbar .casora-drawer,
+.navbar .casora-drawer-backdrop {
+  display: none;
+}
+
+/* Cinematic homepage testimonial replacing the exported review carousel. */
+.casora-testimonial-host {
+  position: relative !important;
+  display: block !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100svh !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  background: #03070d !important;
+}
+
+.casora-testimonial-host > :not(.casora-testimonial-slot) {
+  display: none !important;
+}
+
+.casora-testimonial-slot,
+.casora-testimonial {
+  width: 100%;
+  min-height: 100svh;
+}
+
+.casora-testimonial {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  overflow: hidden;
+  color: #f5f7fa;
+  font-family: Turnkey, sans-serif;
+}
+
+.casora-testimonial__media {
+  z-index: -3;
+  object-fit: cover;
+  object-position: 72% 42%;
+  transform: scale(1.035);
+}
+
+.casora-testimonial__shade {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(2, 9, 17, 0.94) 0%, rgba(2, 12, 23, 0.82) 40%, rgba(2, 12, 23, 0.26) 73%, rgba(2, 9, 17, 0.38) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.48));
+}
+
+.casora-testimonial__inner {
+  display: flex;
+  width: min(calc(100% - clamp(48px, 10vw, 180px)), 1440px);
+  min-height: 100svh;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-inline: auto;
+  padding-block: clamp(88px, 9vw, 132px);
+}
+
+.casora-testimonial__quote-block {
+  width: min(820px, 72vw);
+}
+
+.casora-testimonial__mark {
+  width: 52px;
+  height: 40px;
+  color: #00c8ee;
+}
+
+.casora-testimonial blockquote {
+  max-width: 850px;
+  margin: 28px 0 0;
+  padding: 0;
+  border: 0;
+  color: #f5f7fa;
+  font-size: clamp(1.9rem, 3vw, 3rem);
+  font-weight: 600;
+  line-height: 1.36;
+  letter-spacing: -0.035em;
+}
+
+.casora-testimonial__identity {
+  display: flex;
+  width: fit-content;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px 10px 10px;
+  border-radius: 10px;
+  background: #f5f7fa;
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.32);
+  color: #0a1f44;
+}
+
+.casora-testimonial__avatar {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 8px;
+  background: linear-gradient(145deg, #d9f5fb, #5fc6e9);
+  color: #0a1f44;
+}
+
+.casora-testimonial__avatar svg {
+  width: 32px;
+  height: 32px;
+}
+
+.casora-testimonial__identity strong,
+.casora-testimonial__identity small {
+  display: block;
+}
+
+.casora-testimonial__identity strong {
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+
+.casora-testimonial__identity small {
+  margin-top: 2px;
+  color: #007bff;
+  font-size: 0.75rem;
+}
+
+@media screen and (max-width: 767px) {
+  .casora-testimonial__media {
+    object-position: 64% center;
+  }
+
+  .casora-testimonial__shade {
+    background: linear-gradient(180deg, rgba(2, 9, 17, 0.76), rgba(2, 9, 17, 0.42) 48%, rgba(2, 9, 17, 0.88));
+  }
+
+  .casora-testimonial__inner {
+    width: calc(100% - 40px);
+    padding-block: 72px 48px;
+  }
+
+  .casora-testimonial__quote-block {
+    width: 100%;
+  }
+
+  .casora-testimonial blockquote {
+    font-size: clamp(1.65rem, 7vw, 2.35rem);
+  }
 }
 
 @media screen and (min-width: 992px) {
@@ -113,10 +319,42 @@
   }
 }
 
+/* The exported Webflow interaction fades these items when the page scrolls.
+   Casora's unified navigation keeps both anchors present in every state. */
+@media screen and (min-width: 1181px) {
+  .navbar .brand.is-navbar,
+  .navbar .brand.is-navbar .navbar_brand-svg,
+  .navbar .button.is-navbar {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  .navbar .brand.is-navbar {
+    display: flex !important;
+    align-items: center !important;
+  }
+
+  .navbar .button.is-navbar {
+    display: flex !important;
+    align-self: center !important;
+    justify-self: end !important;
+    transform: none !important;
+    inset: auto !important;
+  }
+}
+
 @media screen and (max-width: 1180px) {
+  html.casora-menu-open,
+  html.casora-menu-open body {
+    overflow: hidden !important;
+  }
+
   .navbar .container-large.is-navbar.is-main {
     display: flex !important;
     justify-content: space-between !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
   }
 
   .navbar .brand.is-navbar,
@@ -192,78 +430,298 @@
   }
 
   .navbar .nav-menu {
-    display: none !important;
+    position: fixed !important;
+    inset: 0 0 0 auto !important;
+    z-index: 2147483646 !important;
+    display: block !important;
+    width: min(430px, 100vw) !important;
+    height: 100dvh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+    border-left: 1px solid rgba(107, 114, 128, 0.28) !important;
+    border-radius: 0 !important;
+    background: #05090f !important;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+    box-shadow: -34px 0 80px rgba(0, 0, 0, 0.48) !important;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(100%, 0, 0);
+    transition:
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 220ms ease,
+      visibility 0s linear 420ms;
+    overflow: hidden !important;
   }
 
   .navbar .nav-menu[data-nav-menu-open] {
-    position: fixed !important;
-    inset: 96px 20px auto !important;
-    z-index: 9999 !important;
     display: block !important;
-    width: auto !important;
-    height: auto !important;
-    max-height: calc(100dvh - 112px) !important;
-    margin: 0 auto !important;
-    padding: 8px !important;
-    border: 1px solid rgba(107, 114, 128, 0.34) !important;
-    border-radius: 16px !important;
-    background: rgba(3, 7, 12, 0.96) !important;
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.48) !important;
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
-    backdrop-filter: blur(20px) saturate(140%);
-    overflow-y: auto !important;
+    opacity: 1;
+    visibility: visible;
+    transform: translate3d(0, 0, 0);
+    transition:
+      transform 420ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 220ms ease,
+      visibility 0s linear 0s;
+  }
+
+  .navbar .casora-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2147483645;
+    display: none !important;
+    padding: 0;
+    border: 0;
+    background: rgba(0, 2, 6, 0.72);
+    opacity: 0;
+    visibility: hidden;
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    filter: none !important;
+    transition: opacity 260ms ease, visibility 0s linear 420ms;
+  }
+
+  .navbar .casora-drawer-backdrop[data-nav-menu-open] {
+    display: none !important;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 260ms ease, visibility 0s linear 0s;
+  }
+
+  .navbar .casora-drawer {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    color: #f5f7fa;
+  }
+
+  .navbar .casora-drawer__header {
+    display: flex;
+    min-height: 92px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-bottom: 1px solid rgba(107, 114, 128, 0.24);
+  }
+
+  .navbar .casora-drawer__brand {
+    display: block;
+    width: 218px;
+    height: 54px;
+  }
+
+  .navbar .casora-drawer__brand img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: left center;
+  }
+
+  .navbar .casora-drawer__close {
+    position: relative;
+    width: 46px;
+    height: 46px;
+    flex: 0 0 46px;
+    padding: 0;
+    border: 1px solid rgba(107, 114, 128, 0.42);
+    border-radius: 50%;
+    background: rgba(10, 31, 68, 0.58);
+    transition: border-color 180ms ease, background-color 180ms ease;
+  }
+
+  .navbar .casora-drawer__close:hover {
+    border-color: rgba(0, 229, 255, 0.58);
+    background: rgba(0, 123, 255, 0.16);
+  }
+
+  .navbar .casora-drawer__close::before,
+  .navbar .casora-drawer__close::after {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 19px;
+    height: 2px;
+    border-radius: 999px;
+    background: #f5f7fa;
+    content: "";
+  }
+
+  .navbar .casora-drawer__close::before {
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  .navbar .casora-drawer__close::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  .navbar .casora-drawer__viewport {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .navbar .casora-drawer__panel {
+    position: absolute;
+    inset: 0;
+    padding: 34px 26px 28px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 191, 232, 0.34) transparent;
+    transition:
+      transform 380ms cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 220ms ease;
+  }
+
+  .navbar .casora-drawer__panel--main {
+    transform: translateX(0);
+  }
+
+  .navbar .casora-drawer__panel--services {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(100%);
+  }
+
+  .navbar .nav-menu[data-casora-submenu="services"] .casora-drawer__panel--main {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-30%);
+  }
+
+  .navbar .nav-menu[data-casora-submenu="services"] .casora-drawer__panel--services {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(0);
+  }
+
+  .navbar .casora-drawer__eyebrow {
+    margin: 0 0 14px;
+    color: #00c7ef;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .navbar .casora-drawer__list {
+    display: block;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .navbar .casora-drawer__item {
+    display: block;
+    margin: 0;
+    border-bottom: 1px solid rgba(107, 114, 128, 0.22);
+  }
+
+  .navbar .casora-drawer__link {
+    display: flex;
+    width: 100%;
+    min-height: 62px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 13px 4px;
+    border: 0;
+    background: transparent;
+    color: #f5f7fa;
+    font: inherit;
+    font-size: clamp(1.2rem, 3.4vw, 1.55rem);
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: color 180ms ease, padding 180ms ease;
+  }
+
+  .navbar .casora-drawer__link:hover {
+    padding-left: 8px;
+    color: #00c7ef;
+  }
+
+  .navbar .casora-drawer__arrow {
+    display: inline-grid;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 30px;
+    place-items: center;
+    border: 1px solid rgba(107, 114, 128, 0.36);
+    border-radius: 50%;
+    color: #00c7ef;
+    font-size: 0.9rem;
+  }
+
+  .navbar .casora-drawer__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 30px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: rgba(245, 247, 250, 0.7);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .navbar .casora-drawer__back:hover,
+  .navbar .casora-drawer__all-services:hover {
+    color: #00c7ef;
+  }
+
+  .navbar .casora-drawer__service-link {
+    min-height: 55px;
+    font-size: 1rem;
+  }
+
+  .navbar .casora-drawer__all-services {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 24px;
+    color: #f5f7fa;
+    font-weight: 600;
+  }
+
+  .navbar .casora-drawer__footer {
+    padding: 22px 26px 26px;
+    border-top: 1px solid rgba(107, 114, 128, 0.24);
+    background: linear-gradient(135deg, rgba(10, 31, 68, 0.64), rgba(3, 7, 12, 0.9));
+  }
+
+  .navbar .casora-drawer__footer p {
+    margin: 0 0 12px;
+    color: rgba(245, 247, 250, 0.62);
+    font-size: 0.88rem;
+  }
+
+  .navbar .casora-drawer__footer a {
+    display: flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    border: 1px solid rgba(0, 229, 255, 0.34);
+    border-radius: 12px;
+    background: linear-gradient(135deg, #007bff, #00bfe8);
+    color: #fff;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(0, 123, 255, 0.2);
   }
 
   .navbar .nav-menu[data-nav-menu-open] .mobile_menu {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: stretch !important;
-    gap: 0 !important;
-    height: auto !important;
-    max-height: none !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    border-radius: 0 !important;
-    background: transparent !important;
-    color: #f5f7fa !important;
+    display: none !important;
   }
 
   .navbar .nav-menu[data-nav-menu-open] .nav-link {
-    flex: 0 0 auto !important;
-    display: flex !important;
-    width: 100% !important;
-    height: auto !important;
-    min-height: 52px;
-    padding: 12px 14px !important;
-    border: 0 !important;
-    border-bottom: 1px solid rgba(107, 114, 128, 0.2) !important;
-    border-radius: 8px !important;
-    background: transparent !important;
-    color: rgba(245, 247, 250, 0.78) !important;
-  }
-
-  .navbar .nav-menu[data-nav-menu-open] > .mobile_menu > .nav-link:last-of-type {
-    border-bottom-color: transparent !important;
-  }
-
-  .navbar .nav-menu[data-nav-menu-open] .nav-link:hover {
-    background: rgba(0, 123, 255, 0.1) !important;
-    color: #f5f7fa !important;
+    display: none !important;
   }
 
   .navbar .nav-menu[data-nav-menu-open] .nav-dropdown {
-    display: none !important;
-  }
-
-  .navbar .nav-menu[data-nav-menu-open] .nav-link_heading {
-    color: #f5f7fa !important;
-  }
-
-  .navbar .nav-menu[data-nav-menu-open] .nav-link_description {
-    display: none !important;
-  }
-
-  .navbar .nav-menu[data-nav-menu-open] .close_menu {
     display: none !important;
   }
 
@@ -272,11 +730,28 @@
   }
 }
 
-@media screen and (max-width: 767px) {
-  .navbar .nav-menu[data-nav-menu-open] {
-    inset: 82px 8px auto !important;
-    max-height: calc(100dvh - 94px) !important;
-    border-radius: 14px !important;
+@media screen and (max-width: 520px) {
+  .navbar .nav-menu {
+    width: 100vw !important;
+    max-width: none !important;
+  }
+
+  .navbar .casora-drawer__header {
+    min-height: 82px;
+    padding: 14px 18px;
+  }
+
+  .navbar .casora-drawer__brand {
+    width: 190px;
+    height: 48px;
+  }
+
+  .navbar .casora-drawer__panel {
+    padding: 28px 20px 22px;
+  }
+
+  .navbar .casora-drawer__footer {
+    padding: 18px 20px 20px;
   }
 }
 
@@ -287,14 +762,24 @@
 
 @media screen and (max-width: 767px) {
   .navbar {
-    padding: 10px 8px !important;
+    padding: 12px 12px 0 !important;
   }
 
   .navbar .container-large.is-navbar.is-main {
-    width: min(calc(100% - 8px), 100%) !important;
-    min-height: 62px;
+    width: 100% !important;
+    min-height: 72px;
     padding: 7px 8px 7px 12px !important;
-    border-radius: 15px;
+    border-radius: 16px;
+  }
+
+  .navbar[data-casora-nav-scrolled="true"] {
+    padding: 0 !important;
+  }
+
+  .navbar[data-casora-nav-scrolled="true"] .container-large.is-navbar.is-main {
+    min-height: 64px;
+    padding-inline: 12px !important;
+    border-radius: 0;
   }
 
   .navbar .brand.is-navbar,
