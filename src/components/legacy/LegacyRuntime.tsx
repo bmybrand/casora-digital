@@ -618,7 +618,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
     // interaction bundle used by sections farther down the page.
     let idleHandle: number | undefined;
     let timeoutHandle: number | undefined;
-    if ("requestIdleCallback" in window) {
+    if (typeof window.requestIdleCallback === "function") {
       idleHandle = window.requestIdleCallback(() => void loadScripts(), { timeout: 1200 });
     } else {
       timeoutHandle = window.setTimeout(() => void loadScripts(), 180);
