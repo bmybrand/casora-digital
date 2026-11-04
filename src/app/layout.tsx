@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 
 import "./globals.css";
 
+const siteDescription =
+  "Casora Digital creates purposeful brands, useful digital experiences and reliable software products.";
+
 const extensionAttributeCleanup = `
 (() => {
   const attributes = ["bis_skin_checked", "bis_register", "cz-shortcut-listen"];
@@ -47,11 +50,30 @@ export const metadata: Metadata = {
     default: "Casora Digital — Intelligence. Innovation. Impact.",
     template: "%s | Casora Digital",
   },
-  description:
-    "Casora Digital creates purposeful brands, useful digital experiences and reliable software products.",
+  description: siteDescription,
   icons: {
-    icon: "/assets/casora-favicon.png",
-    apple: "/assets/casora-favicon.png",
+    icon: "/assets/casora-favicon-v2.png",
+    apple: "/assets/casora-favicon-v2.png",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "Casora Digital",
+    title: "Casora Digital — Intelligence. Innovation. Impact.",
+    description: siteDescription,
+    images: [
+      {
+        url: "/assets/casora-social-preview.png",
+        width: 1200,
+        height: 630,
+        alt: "Casora Digital — Intelligence. Innovation. Impact.",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Casora Digital — Intelligence. Innovation. Impact.",
+    description: siteDescription,
+    images: ["/assets/casora-social-preview.png"],
   },
 };
 
