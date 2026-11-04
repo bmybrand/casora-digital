@@ -18,6 +18,13 @@
 
 .casora-hero-backdrop {
   z-index: 0;
+  background: #02040a;
+}
+
+#casora-current-hero-slats {
+  position: absolute;
+  inset: 0;
+  background: #02040a;
 }
 
 .casora-hero-backdrop .micro-slats {

@@ -78,7 +78,7 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
         title: "Design Systems",
         description:
           "Reusable typography, colour, components and interaction rules that keep every page consistent while making future updates faster.",
-        image: "/assets/generated/web-ui-warm.png",
+        image: "/assets/generated/web-ui-warm.webp",
       },
       {
         number: "02",
@@ -108,14 +108,14 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
       "/assets/generated/article-transit-design.png",
       "/assets/generated/article-design-recognition.png",
       "/assets/generated/cutout-nocode-builder.png",
-      "/assets/generated/web-ui-warm.png",
+      "/assets/generated/web-ui-warm.webp",
     ],
     projects: [
       {
         title: "BrightPath",
         description:
           "A clearer digital journey and configurable experience designed to turn a complex product into a confident customer decision.",
-        image: "/assets/generated/case-drivelodge-hero.png",
+        image: "/assets/generated/case-drivelodge-hero.webp",
         href: "/work/drivelodge/",
         tags: ["Web design", "UX/UI", "Configurator"],
       },
@@ -123,7 +123,7 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
         title: "Lumina Studios",
         description:
           "A premium web and brand system that balances expressive storytelling with a practical, maintainable content structure.",
-        image: "/assets/generated/case-hacien-packaging.png",
+        image: "/assets/generated/case-hacien-packaging.webp",
         href: "/work/hacien/",
         tags: ["Website", "Brand system", "Content"],
       },
@@ -170,7 +170,7 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
         title: "Identity Design",
         description:
           "Memorable identity systems that connect positioning, logo, typography, colour and imagery around one recognisable idea.",
-        image: "/assets/generated/brand-editorial-warm.png",
+        image: "/assets/generated/brand-editorial-warm.webp",
       },
       {
         number: "02",
@@ -191,23 +191,23 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
         title: "Packaging & Print",
         description:
           "Print-ready packaging and collateral that translate the brand into tactile materials with clarity, craft and shelf presence.",
-        image: "/assets/generated/case-hacien-packaging.png",
+        image: "/assets/generated/case-hacien-packaging.webp",
       },
     ],
     processIntroduction:
       "Our four-stage brand process keeps strategic decisions connected to the visual work, giving every identity a clear reason to look and behave the way it does.",
     processImages: [
       "/assets/generated/article-transit-design.png",
-      "/assets/generated/brand-editorial-warm.png",
+      "/assets/generated/brand-editorial-warm.webp",
       "/assets/generated/editorial-plum.png",
-      "/assets/generated/case-hacien-packaging.png",
+      "/assets/generated/case-hacien-packaging.webp",
     ],
     projects: [
       {
         title: "Lumina Studios",
         description:
           "A confident premium identity spanning packaging, digital touchpoints and campaign materials without losing consistency.",
-        image: "/assets/generated/case-hacien-packaging.png",
+        image: "/assets/generated/case-hacien-packaging.webp",
         href: "/work/hacien/",
         tags: ["Identity", "Packaging", "Campaign"],
       },
@@ -352,16 +352,16 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
       "Casora plans, migrates and improves cloud environments that stay secure, observable and practical to operate as products and organisations grow.",
     capabilities: [
       { number: "01", title: "Cloud Architecture", description: "Resilient infrastructure shaped around performance, security, cost and the real demands of your product.", image: "/assets/generated/software-system-amber.png" },
-      { number: "02", title: "Cloud Migration", description: "A phased route from legacy hosting to modern cloud services with clear dependencies and controlled risk.", image: "/assets/generated/web-ui-warm.png" },
+      { number: "02", title: "Cloud Migration", description: "A phased route from legacy hosting to modern cloud services with clear dependencies and controlled risk.", image: "/assets/generated/web-ui-warm.webp" },
       { number: "03", title: "DevOps & Delivery", description: "Repeatable build, test and deployment workflows that help teams release confidently and recover quickly.", image: "/assets/generated/logistics-olive.png" },
       { number: "04", title: "Cloud Optimisation", description: "Monitoring, rightsizing and architectural improvements that make cloud systems faster and more cost effective.", image: "/assets/generated/case-mobillio-dashboard.png" },
     ],
     processIntroduction: "Our cloud process connects business priorities with technical evidence, so every migration and infrastructure decision has a clear purpose.",
-    processImages: ["/assets/generated/software-system-amber.png", "/assets/generated/web-ui-warm.png", "/assets/generated/logistics-olive.png", "/assets/generated/case-mobillio-dashboard.png"],
+    processImages: ["/assets/generated/software-system-amber.png", "/assets/generated/web-ui-warm.webp", "/assets/generated/logistics-olive.png", "/assets/generated/case-mobillio-dashboard.png"],
     projects: [
       { title: "Summit Cloud", description: "A secure cloud foundation that brings operational services together and gives a growing team clearer control.", image: "/assets/generated/case-mannson-portal.png", href: "/work/mannson-freight/", tags: ["Cloud architecture", "Migration", "DevOps"] },
       { title: "FlowGrid", description: "A scalable application environment designed for dependable releases, useful monitoring and changing demand.", image: "/assets/generated/case-mobillio-dashboard.png", href: "/work/mobillio/", tags: ["Platform", "Observability", "Optimisation"] },
-      { title: "BrightPath", description: "A modern delivery platform that supports responsive customer experiences without adding operational complexity.", image: "/assets/generated/case-drivelodge-hero.png", href: "/work/drivelodge/", tags: ["Infrastructure", "Delivery", "Security"] },
+      { title: "BrightPath", description: "A modern delivery platform that supports responsive customer experiences without adding operational complexity.", image: "/assets/generated/case-drivelodge-hero.webp", href: "/work/drivelodge/", tags: ["Infrastructure", "Delivery", "Security"] },
     ],
     pricing: "Cloud work is planned in visible phases, from assessment and architecture through migration and ongoing optimisation, with costs tied to clear outcomes.",
     faqs: [
@@ -405,15 +405,15 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
     capabilities: [
       { number: "01", title: "Digital Roadmaps", description: "A prioritised plan connecting business goals, user needs, technology and achievable stages of change.", image: "/assets/generated/article-transit-design.png" },
       { number: "02", title: "Process Redesign", description: "Clearer workflows that remove duplication, expose bottlenecks and make ownership easier to understand.", image: "/assets/generated/case-mannson-portal.png" },
-      { number: "03", title: "Platform Modernisation", description: "Thoughtful replacement or improvement of legacy tools without losing critical knowledge and continuity.", image: "/assets/generated/web-ui-warm.png" },
-      { number: "04", title: "Adoption & Enablement", description: "Practical rollout, documentation and feedback loops that help new systems become part of everyday work.", image: "/assets/generated/brand-editorial-warm.png" },
+      { number: "03", title: "Platform Modernisation", description: "Thoughtful replacement or improvement of legacy tools without losing critical knowledge and continuity.", image: "/assets/generated/web-ui-warm.webp" },
+      { number: "04", title: "Adoption & Enablement", description: "Practical rollout, documentation and feedback loops that help new systems become part of everyday work.", image: "/assets/generated/brand-editorial-warm.webp" },
     ],
     processIntroduction: "Transformation works when strategy and delivery remain connected. Our four stages make change manageable, measurable and useful from the first release.",
-    processImages: ["/assets/generated/article-transit-design.png", "/assets/generated/case-mannson-portal.png", "/assets/generated/web-ui-warm.png", "/assets/generated/brand-editorial-warm.png"],
+    processImages: ["/assets/generated/article-transit-design.png", "/assets/generated/case-mannson-portal.png", "/assets/generated/web-ui-warm.webp", "/assets/generated/brand-editorial-warm.webp"],
     projects: [
       { title: "Summit Systems", description: "A connected service platform replacing fragmented customer and operational processes with one coherent journey.", image: "/assets/generated/case-mannson-portal.png", href: "/work/mannson-freight/", tags: ["Transformation", "Service design", "Platform"] },
       { title: "FlowGrid", description: "A modern workflow product that gives teams clearer information, faster decisions and fewer manual handoffs.", image: "/assets/generated/case-mobillio-dashboard.png", href: "/work/mobillio/", tags: ["Process design", "SaaS", "Integration"] },
-      { title: "Lumina Studios", description: "A unified brand and digital system supporting consistent communication across a changing organisation.", image: "/assets/generated/case-hacien-packaging.png", href: "/work/hacien/", tags: ["Digital system", "Content", "Enablement"] },
+      { title: "Lumina Studios", description: "A unified brand and digital system supporting consistent communication across a changing organisation.", image: "/assets/generated/case-hacien-packaging.webp", href: "/work/hacien/", tags: ["Digital system", "Content", "Enablement"] },
     ],
     pricing: "Transformation programmes are divided into clear stages so organisations can validate priorities, release useful improvements and manage investment responsibly.",
     faqs: [
@@ -439,7 +439,7 @@ const serviceDetails: Record<ServiceDetailKind, ServiceDetailData> = {
     projects: [
       { title: "Summit Roadmap", description: "A technology and delivery roadmap aligning platform investment with customer and operational priorities.", image: "/assets/generated/case-mannson-portal.png", href: "/work/mannson-freight/", tags: ["Strategy", "Architecture", "Roadmap"] },
       { title: "FlowGrid Review", description: "A product and architecture review that identified the safest path from early platform to scalable service.", image: "/assets/generated/case-mobillio-dashboard.png", href: "/work/mobillio/", tags: ["Technical audit", "SaaS", "Planning"] },
-      { title: "BrightPath", description: "A focused discovery programme turning competing requirements into one achievable digital plan.", image: "/assets/generated/case-drivelodge-hero.png", href: "/work/drivelodge/", tags: ["Discovery", "Service design", "Governance"] },
+      { title: "BrightPath", description: "A focused discovery programme turning competing requirements into one achievable digital plan.", image: "/assets/generated/case-drivelodge-hero.webp", href: "/work/drivelodge/", tags: ["Discovery", "Service design", "Governance"] },
     ],
     pricing: "Consulting can be commissioned as a focused review, a defined strategy engagement or ongoing advisory support, with deliverables agreed before work begins.",
     faqs: [
@@ -501,6 +501,10 @@ const reviews = [
   },
 ] as const;
 
+function optimizedImage(source: string) {
+  return source.replace(/\.(?:png|jpe?g)$/i, ".webp");
+}
+
 function FaqList({ faqs }: { faqs: ServiceDetailData["faqs"] }) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
@@ -543,7 +547,7 @@ export function ServiceDetail({ kind }: { kind: ServiceDetailKind }) {
           {detail.capabilities.map((capability) => (
             <article className="casora-detail__capability" key={capability.number}>
               <div className="casora-detail__capability-image">
-                <img src={capability.image} alt="" loading="lazy" />
+                <img src={optimizedImage(capability.image)} alt="" loading="lazy" />
               </div>
               <span>{capability.number}</span>
               <h3>{capability.title}</h3>
@@ -568,7 +572,7 @@ export function ServiceDetail({ kind }: { kind: ServiceDetailKind }) {
                 <p>{stage.description}</p>
               </div>
               <div className="casora-detail__process-image">
-                <img src={detail.processImages[index]} alt="" loading="lazy" />
+                <img src={optimizedImage(detail.processImages[index])} alt="" loading="lazy" />
               </div>
             </article>
           ))}
@@ -585,7 +589,7 @@ export function ServiceDetail({ kind }: { kind: ServiceDetailKind }) {
           {detail.projects.map((project) => (
             <article className="casora-detail__project" key={project.title}>
               <a className="casora-detail__project-image" href={project.href}>
-                <img src={project.image} alt={`${project.title} project`} loading="lazy" />
+                <img src={optimizedImage(project.image)} alt={`${project.title} project`} loading="lazy" />
               </a>
               <div className="casora-detail__project-copy">
                 <div className="casora-detail__tags">
@@ -618,7 +622,7 @@ export function ServiceDetail({ kind }: { kind: ServiceDetailKind }) {
           {reviews.map((review) => (
             <article key={review.name}>
               <div>
-                <img src={review.image} alt="" loading="lazy" />
+                <img src={optimizedImage(review.image)} alt="" loading="lazy" />
                 <span><strong>{review.name}</strong><small>{review.role}</small></span>
               </div>
               <p>{review.quote}</p>

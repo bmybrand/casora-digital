@@ -1,6 +1,10 @@
 "use client";
 
-import MicroSlats from "../react-bits/MicroSlats";
+import dynamic from "next/dynamic";
+
+const MicroSlats = dynamic(() => import("../react-bits/MicroSlats"), {
+  ssr: false,
+});
 
 export function HeroBackdrop() {
   return (

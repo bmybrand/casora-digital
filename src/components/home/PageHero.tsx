@@ -1,26 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import dynamic from "next/dynamic";
 
 import type { PageRoute } from "../pages/page-registry";
 import { CurrentHero, type CurrentHeroProps } from "./HomeHero";
-import { ServiceDetail, type ServiceDetailKind } from "./ServiceDetail";
-import { ServicesOverview } from "./ServicesOverview";
+import type { ServiceDetailKind } from "./ServiceDetail";
 
-const heroSelector = [
-  "#legacy-page-root .about_hero",
-  "#legacy-page-root .contact_hero",
-  "#legacy-page-root .news_hero",
-  "#legacy-page-root .pricing_hero_actual",
-  "#legacy-page-root .service_hero",
-  "#legacy-page-root .services_hero",
-  "#legacy-page-root .webflow_hero",
-  "#legacy-page-root .case_hero",
-  "#legacy-page-root .study_hero",
-  "#legacy-page-root .section_cs-hero",
-  "#legacy-page-root .article_header",
-].join(",");
+const ServiceDetail = dynamic(() =>
+  import("./ServiceDetail").then((module) => module.ServiceDetail),
+);
+const ServicesOverview = dynamic(() =>
+  import("./ServicesOverview").then((module) => module.ServicesOverview),
+);
 
 const sharedSummary =
   "Smart products simplify demanding work while thoughtful design keeps every experience clear, useful and ready to grow.";
@@ -259,36 +250,13 @@ const serviceDetailKinds: Partial<
 };
 
 export function PageHero({ route }: { route: Exclude<PageRoute, ""> }) {
-  const [mount, setMount] = useState<HTMLElement | null>(null);
   const detailKind = serviceDetailKinds[route] ?? null;
 
-  useEffect(() => {
-    const legacyHero = document.querySelector<HTMLElement>(heroSelector);
-    if (!legacyHero) return;
-
-    const legacyRoot = document.getElementById("legacy-page-root");
-    if (detailKind && legacyRoot) legacyRoot.dataset.casoraServiceDetail = "true";
-
-    const slot = document.createElement("div");
-    slot.id = "casora-page-hero-slot";
-    legacyHero.replaceWith(slot);
-    const animationFrame = requestAnimationFrame(() => setMount(slot));
-
-    return () => {
-      cancelAnimationFrame(animationFrame);
-      if (legacyRoot) delete legacyRoot.dataset.casoraServiceDetail;
-      if (slot.isConnected) slot.replaceWith(legacyHero);
-    };
-  }, [detailKind, route]);
-
-  return mount
-    ? createPortal(
-        <>
-          <CurrentHero {...pageHeroes[route]} />
-          {route === "services" ? <ServicesOverview /> : null}
-          {detailKind ? <ServiceDetail kind={detailKind} /> : null}
-        </>,
-        mount,
-      )
-    : null;
+  return (
+    <>
+      <CurrentHero {...pageHeroes[route]} />
+      {route === "services" ? <ServicesOverview /> : null}
+      {detailKind ? <ServiceDetail kind={detailKind} /> : null}
+    </>
+  );
 }

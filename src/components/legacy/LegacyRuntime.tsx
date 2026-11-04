@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 
 type LegacyRuntimeProps = {
   pageId: string;
@@ -168,6 +168,91 @@ const serviceMenuItems = [
   },
 ] as const;
 
+type DeferredSplineApplication = {
+  load: (url: string) => Promise<void>;
+  dispose?: () => void;
+};
+
+function setupDeferredLegacySpline() {
+  const elements = Array.from(
+    document.querySelectorAll<HTMLElement>(
+      '#legacy-page-root [data-animation-type="spline"][data-spline-url]',
+    ),
+  );
+  if (elements.length === 0) return () => undefined;
+
+  let runtimePromise:
+    | Promise<{
+        Application: new (canvas: HTMLCanvasElement) => DeferredSplineApplication;
+      }>
+    | undefined;
+  const observers: IntersectionObserver[] = [];
+  const applications: DeferredSplineApplication[] = [];
+  let disposed = false;
+
+  const getRuntime = () => {
+    const runtimeUrl = new URL(
+      "/npm/@splinetool/runtime/build/runtime.js",
+      window.location.href,
+    ).href;
+    runtimePromise ??= import(
+      /* webpackIgnore: true */ runtimeUrl
+    ) as Promise<{
+      Application: new (canvas: HTMLCanvasElement) => DeferredSplineApplication;
+    }>;
+    return runtimePromise;
+  };
+
+  elements.forEach((element) => {
+    const scene = element.dataset.splineUrl;
+    if (!scene) return;
+
+    element.removeAttribute("data-animation-type");
+    element.removeAttribute("data-spline-url");
+    const canvas =
+      element.querySelector<HTMLCanvasElement>("canvas") ??
+      element.appendChild(document.createElement("canvas"));
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+
+        void getRuntime()
+          .then(({ Application }) => {
+            if (disposed || canvas.clientWidth <= 0 || canvas.clientHeight <= 0) return;
+            const application = new Application(canvas);
+            applications.push(application);
+            return application.load(scene);
+          })
+          .then(() => {
+            if (!disposed) element.classList.add("is-ready");
+          })
+          .catch(() => {
+            // The responsive image inside the section remains as the fallback.
+          });
+      },
+      { rootMargin: "180px 0px" },
+    );
+
+    observer.observe(element);
+    observers.push(observer);
+  });
+
+  return () => {
+    disposed = true;
+    observers.forEach((observer) => observer.disconnect());
+    applications.forEach((application) => {
+      if (typeof application.dispose !== "function") return;
+      try {
+        application.dispose();
+      } catch {
+        // Detached WebGL canvases are collected by the browser.
+      }
+    });
+  };
+}
+
 function setupServiceMenu() {
   const dropdowns = Array.from(
     document.querySelectorAll<HTMLElement>(
@@ -181,14 +266,15 @@ function setupServiceMenu() {
     const heading = dropdown.querySelector<HTMLElement>(
       ".nav-dropdown_header > div:first-child",
     );
-    const toggle = dropdown
-      .closest<HTMLElement>(".nav-dropdown")
-      ?.querySelector<HTMLElement>(":scope > .nav-link > div");
+    const wrapper = dropdown.closest<HTMLElement>(".nav-dropdown");
+    const toggleControl = wrapper?.querySelector<HTMLElement>(":scope > .nav-link");
+    const toggle = toggleControl?.querySelector<HTMLElement>(":scope > div");
     if (!list) return;
 
     const originalList = list.innerHTML;
     const originalHeading = heading?.textContent ?? "";
     const originalToggle = toggle?.textContent ?? "";
+    const originalHover = wrapper?.getAttribute("data-hover");
 
     list.innerHTML = serviceMenuItems
       .map(
@@ -207,11 +293,35 @@ function setupServiceMenu() {
       .join("");
     if (heading) heading.textContent = "Services";
     if (toggle) toggle.textContent = "Services";
+    wrapper?.setAttribute("data-hover", "true");
+    toggleControl?.setAttribute("aria-haspopup", "true");
+
+    const preventStickyClick = (event: MouseEvent) => {
+      if (window.innerWidth < 992) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+    };
+
+    const clearWebflowOpenState = () => {
+      toggleControl?.classList.remove("w--open");
+      dropdown.classList.remove("w--open");
+      toggleControl?.setAttribute("aria-expanded", "false");
+    };
+
+    toggleControl?.addEventListener("click", preventStickyClick, true);
+    wrapper?.addEventListener("pointerleave", clearWebflowOpenState);
 
     restorations.push(() => {
+      toggleControl?.removeEventListener("click", preventStickyClick, true);
+      wrapper?.removeEventListener("pointerleave", clearWebflowOpenState);
       list.innerHTML = originalList;
       if (heading) heading.textContent = originalHeading;
       if (toggle) toggle.textContent = originalToggle;
+      if (wrapper && originalHover === null) wrapper.removeAttribute("data-hover");
+      else if (wrapper && typeof originalHover === "string") {
+        wrapper.setAttribute("data-hover", originalHover);
+      }
     });
   });
 
@@ -297,7 +407,7 @@ function setupResponsiveNavigation() {
     <div class="casora-drawer" aria-label="Mobile navigation">
       <div class="casora-drawer__header">
         <a class="casora-drawer__brand" href="/" aria-label="Casora Digital home">
-          <img src="/assets/casora-header-logo.png" alt="Casora Digital" />
+          <img src="/assets/casora-header-logo-250.webp" alt="Casora Digital" width="250" height="47" />
         </a>
         <button class="casora-drawer__close" type="button" aria-label="Close navigation menu">
           <span aria-hidden="true"></span>
@@ -456,7 +566,7 @@ function setupResponsiveNavigation() {
 }
 
 export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
-  useEffect(() => {
+  useLayoutEffect(() => {
     const root = document.documentElement;
     root.classList.add("w-mod-js");
     root.dataset.wfSite = "6501f1891917bde75ab542ee";
@@ -465,6 +575,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
     let cancelled = false;
     const originalConsoleError = console.error;
     const cleanupFaqAccordions = setupFaqAccordions();
+    const cleanupDeferredLegacySpline = setupDeferredLegacySpline();
     const cleanupServiceMenu = setupServiceMenu();
     const cleanupNavbarScrollState = setupNavbarScrollState();
     const cleanupResponsiveNavigation = setupResponsiveNavigation();
@@ -502,11 +613,25 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
       if (cancelled) return;
     };
 
-    void loadScripts();
+    // The current hero and navigation are rendered by React and do not depend
+    // on Webflow. Let the browser paint them before parsing the legacy
+    // interaction bundle used by sections farther down the page.
+    let idleHandle: number | undefined;
+    let timeoutHandle: number | undefined;
+    if ("requestIdleCallback" in window) {
+      idleHandle = window.requestIdleCallback(() => void loadScripts(), { timeout: 1200 });
+    } else {
+      timeoutHandle = window.setTimeout(() => void loadScripts(), 180);
+    }
 
     return () => {
       cancelled = true;
+      if (idleHandle !== undefined && "cancelIdleCallback" in window) {
+        window.cancelIdleCallback(idleHandle);
+      }
+      if (timeoutHandle !== undefined) window.clearTimeout(timeoutHandle);
       cleanupFaqAccordions();
+      cleanupDeferredLegacySpline();
       cleanupServiceMenu();
       cleanupNavbarScrollState();
       cleanupResponsiveNavigation();

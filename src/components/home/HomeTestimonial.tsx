@@ -9,7 +9,7 @@ export function HomeTestimonial() {
       <div className="casora-testimonial">
         <Image
           className="casora-testimonial__media"
-          src="/assets/generated/testimonial-services-studio-v1.png"
+          src="/assets/generated/testimonial-services-studio-v1.webp"
           alt=""
           fill
           sizes="100vw"

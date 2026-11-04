@@ -72,23 +72,12 @@ export function HomeHero() {
   const [mount, setMount] = useState<HTMLElement | null>(null);
 
   useEffect(() => {
-    const target = document.getElementById("home-hero-slot");
+    const target = document.getElementById("casora-current-hero-slats");
     if (!target) return;
 
-    target.replaceChildren();
-    setMount(target);
+    const frame = window.requestAnimationFrame(() => setMount(target));
+    return () => window.cancelAnimationFrame(frame);
   }, []);
 
-  return mount ? createPortal(
-    <CurrentHero
-      eyebrow="Independent digital studio"
-      title="Clear work creates lasting momentum."
-      summary="Casora combines brand thinking, product design and engineering to turn ambitious ideas into useful digital experiences."
-      primaryLabel="Start a project"
-      primaryHref="/contact-us/"
-      secondaryLabel="See our work"
-      secondaryHref="/work/"
-    />,
-    mount,
-  ) : null;
+  return mount ? createPortal(<HeroBackdrop />, mount) : null;
 }

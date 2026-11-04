@@ -57,6 +57,8 @@ function ServicesRobot() {
     let disposed = false;
     let loaded = false;
     let application: SplineApplication | undefined;
+    const host = canvasRef.current?.parentElement;
+    if (!host) return;
 
     async function loadScene() {
       try {
@@ -86,13 +88,19 @@ function ServicesRobot() {
       }
     }
 
-    const startTimer = window.setTimeout(() => {
-      void loadScene();
-    }, 0);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries.some((entry) => entry.isIntersecting)) return;
+        observer.disconnect();
+        void loadScene();
+      },
+      { rootMargin: "160px 0px" },
+    );
+    observer.observe(host);
 
     return () => {
       disposed = true;
-      window.clearTimeout(startTimer);
+      observer.disconnect();
       if (loaded && typeof application?.dispose === "function") {
         try {
           application.dispose();

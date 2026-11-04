@@ -18,7 +18,9 @@ export function SiteClosing() {
               Talk to us
             </a>
             <img
-              src="/assets/casora-mark-white-blue-circle.png"
+              src="/assets/casora-mark-white-blue-circle-80.webp"
+              width="80"
+              height="80"
               loading="lazy"
               alt=""
               className="graphic_brand-logo is-footer"
@@ -32,7 +34,12 @@ export function SiteClosing() {
           <div className="casora-site-footer__grid">
             <div className="casora-site-footer__brand">
               <a href="/" aria-label="Casora Digital home">
-                <img src="/assets/casora-footer-logo.png" alt="Casora Digital — Intelligence. Innovation. Impact." />
+                <img
+                  src="/assets/casora-footer-logo-400.webp"
+                  width="400"
+                  height="79"
+                  alt="Casora Digital — Intelligence. Innovation. Impact."
+                />
               </a>
               <p>Purposeful brands, useful products and digital systems built to move ideas forward.</p>
             </div>
