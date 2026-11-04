@@ -186,6 +186,79 @@ function setupServiceMenu() {
   return () => restorations.forEach((restore) => restore());
 }
 
+function setupResponsiveNavigation() {
+  const navbar = document.querySelector<HTMLElement>("#legacy-page-root .navbar");
+  const button = navbar?.querySelector<HTMLElement>(".menu-button");
+  const menu = navbar?.querySelector<HTMLElement>(".nav-menu");
+  if (!navbar || !button || !menu) return () => undefined;
+
+  const closeMenu = () => {
+    menu.removeAttribute("data-nav-menu-open");
+    button.classList.remove("w--open");
+    button.setAttribute("aria-expanded", "false");
+  };
+
+  const openMenu = () => {
+    menu.setAttribute("data-nav-menu-open", "");
+    button.classList.add("w--open");
+    button.setAttribute("aria-expanded", "true");
+  };
+
+  const handleClick = (event: MouseEvent) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+
+    if (target.closest(".menu-button") === button) {
+      if (window.innerWidth > 1180) return;
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      if (menu.hasAttribute("data-nav-menu-open")) closeMenu();
+      else openMenu();
+      return;
+    }
+
+    if (target.closest(".close_menu") && menu.contains(target)) {
+      event.preventDefault();
+      event.stopPropagation();
+      event.stopImmediatePropagation();
+      closeMenu();
+      return;
+    }
+
+    const link = target.closest("a");
+    if (link && menu.contains(link) && !link.closest(".w-dropdown-toggle")) {
+      closeMenu();
+    }
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Escape" && menu.hasAttribute("data-nav-menu-open")) {
+      closeMenu();
+      button.focus();
+    }
+  };
+
+  const handleResize = () => {
+    if (window.innerWidth > 1180 && menu.hasAttribute("data-nav-menu-open")) {
+      closeMenu();
+    }
+  };
+
+  button.setAttribute("aria-expanded", "false");
+  button.setAttribute("aria-label", "Open navigation menu");
+  document.addEventListener("click", handleClick, true);
+  document.addEventListener("keydown", handleKeyDown);
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    closeMenu();
+    document.removeEventListener("click", handleClick, true);
+    document.removeEventListener("keydown", handleKeyDown);
+    window.removeEventListener("resize", handleResize);
+  };
+}
+
 export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
   useEffect(() => {
     const root = document.documentElement;
@@ -198,6 +271,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
     const originalConsoleError = console.error;
     const cleanupFaqAccordions = setupFaqAccordions();
     const cleanupServiceMenu = setupServiceMenu();
+    const cleanupResponsiveNavigation = setupResponsiveNavigation();
 
     const patchedConsoleError = (...args: unknown[]) => {
       const primaryMessage =
@@ -248,6 +322,7 @@ export function LegacyRuntime({ pageId, scripts }: LegacyRuntimeProps) {
       added.forEach((script) => script.remove());
       cleanupFaqAccordions();
       cleanupServiceMenu();
+      cleanupResponsiveNavigation();
       if (console.error === patchedConsoleError) {
         console.error = originalConsoleError;
       }

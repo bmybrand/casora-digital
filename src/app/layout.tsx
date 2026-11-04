@@ -67,7 +67,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           href="/6501f1891917bde75ab542ee/css/casora-runtime.shared.e926a3d59.min.css"
           rel="stylesheet"
         />
-        <link href="/assets/casora-layout.css?v=20261104-no-pricing" rel="stylesheet" />
+        <link href="/assets/casora-layout.css?v=20261104-compact-menu" rel="stylesheet" />
         <link href="/assets/current-home-hero.css" rel="stylesheet" />
       </head>
       <body suppressHydrationWarning>{children}</body>

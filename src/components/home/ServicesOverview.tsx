@@ -55,6 +55,7 @@ function ServicesRobot() {
 
   useEffect(() => {
     let disposed = false;
+    let loaded = false;
     let application: SplineApplication | undefined;
 
     async function loadScene() {
@@ -73,20 +74,32 @@ function ServicesRobot() {
 
         application = new runtime.Application(canvas);
         await application.load(splineSceneUrl);
+        loaded = true;
         if (!disposed) setIsReady(true);
       } catch (error) {
         if (!disposed) {
-          console.error("Failed to load the interactive Casora robot.", error);
+          console.warn(
+            "The interactive Casora robot could not be loaded.",
+            error instanceof Error ? error.message : String(error),
+          );
         }
       }
     }
 
-    void loadScene();
+    const startTimer = window.setTimeout(() => {
+      void loadScene();
+    }, 0);
 
     return () => {
       disposed = true;
-      if (typeof application?.dispose === "function") {
-        application.dispose();
+      window.clearTimeout(startTimer);
+      if (loaded && typeof application?.dispose === "function") {
+        try {
+          application.dispose();
+        } catch {
+          // The copied Spline runtime can throw during a development remount.
+          // The detached canvas is collected by the browser regardless.
+        }
       }
     };
   }, []);
