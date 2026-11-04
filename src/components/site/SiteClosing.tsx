@@ -47,7 +47,6 @@ export function SiteClosing() {
             <nav aria-label="Connect">
               <h3>Connect</h3>
               <a href="/contact-us/">Start a project</a>
-              <a href="/pricing/">Pricing</a>
               <a href="/news/">Ideas</a>
             </nav>
 

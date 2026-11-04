@@ -5,7 +5,6 @@ import { digitalProductsArticleDocument } from "./documents/article-digital-prod
 import { contactUsDocument } from "./documents/contact-us";
 import { homeDocument } from "./documents/home";
 import { newsDocument } from "./documents/news";
-import { pricingDocument } from "./documents/pricing";
 import { servicesDocument } from "./documents/services";
 import { graphicDesignDocument } from "./documents/services-graphic-design";
 import { softwareDevelopmentDocument } from "./documents/services-software-development";
@@ -27,7 +26,6 @@ export const pageDocuments = {
   "article/designing-digital-products-for-change": digitalProductsArticleDocument,
   "contact-us": contactUsDocument,
   news: newsDocument,
-  pricing: pricingDocument,
   services: servicesDocument,
   "services/graphic-design": graphicDesignDocument,
   "services/software-development": softwareDevelopmentDocument,

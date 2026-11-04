@@ -80,15 +80,6 @@ const pageHeroes: Record<Exclude<PageRoute, "">, CurrentHeroProps> = {
     secondaryLabel: "Work with us",
     secondaryHref: "/contact-us/",
   },
-  pricing: {
-    eyebrow: "Flexible options",
-    title: "Designed for growth for you.",
-    summary: "The finished system brings together useful interactions, flexible content and a distinct point of view.",
-    primaryLabel: "See plans",
-    primaryHref: "#plans",
-    secondaryLabel: "Get a quote",
-    secondaryHref: "/contact-us/",
-  },
   services: {
     eyebrow: "What we do",
     title: "Our Services.",

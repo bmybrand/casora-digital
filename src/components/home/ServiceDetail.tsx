@@ -600,20 +600,6 @@ export function ServiceDetail({ kind }: { kind: ServiceDetailKind }) {
         </div>
       </section>
 
-      {detail.pricing ? (
-        <section className="casora-detail__pricing" aria-labelledby={`${kind}-pricing`}>
-          <div>
-            <p>Clear options</p>
-            <h2 id={`${kind}-pricing`}>Pricing made simple.</h2>
-            <span>{detail.pricing}</span>
-          </div>
-          <div className="casora-detail__pricing-actions">
-            <a href="/pricing/">See our plans</a>
-            <a href="/contact-us/">Discuss your project</a>
-          </div>
-        </section>
-      ) : null}
-
       <section className="casora-detail__faq" aria-labelledby={`${kind}-faq`}>
         <div className="casora-detail__section-heading">
           <p>Useful information</p>

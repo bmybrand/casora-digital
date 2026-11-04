@@ -13,6 +13,12 @@
   display: none !important;
 }
 
+/* Pricing is temporarily unavailable; keep the legacy source recoverable. */
+#legacy-page-root a[href="/pricing"],
+#legacy-page-root a[href="/pricing/"] {
+  display: none !important;
+}
+
 /* Temporarily remove the placeholder brand wall everywhere. */
 .home_brands,
 .home_brands + .divider {
