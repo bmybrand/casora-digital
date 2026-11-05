@@ -326,7 +326,7 @@
 
   .navbar .nav-dropdown > .nav-link.w-dropdown-toggle > div::after {
     content: "Services";
-    font-size: 0.875rem;
+    font-size: 1rem;
   }
 
   .navbar .nav-dropdown > .nav-services_desktop-dropdown {
@@ -349,11 +349,11 @@
   .navbar .nav-dropdown > .nav-services_desktop-dropdown::before {
     content: "";
     position: absolute;
-    inset: -6px 0 auto;
-    height: 6px;
+    inset: -48px 0 auto;
+    height: 48px;
   }
 
-  .navbar .nav-dropdown:hover > .nav-services_desktop-dropdown,
+  .navbar .nav-dropdown.casora-hover-open > .nav-services_desktop-dropdown,
   .navbar .nav-dropdown:focus-within > .nav-services_desktop-dropdown,
   .navbar .nav-dropdown > .nav-services_desktop-dropdown.w--open {
     opacity: 1;
@@ -363,7 +363,7 @@
     transition-delay: 0s;
   }
 
-  .navbar .nav-dropdown:hover > .nav-link,
+  .navbar .nav-dropdown.casora-hover-open > .nav-link,
   .navbar .nav-dropdown:focus-within > .nav-link {
     background: rgba(0, 123, 255, 0.12) !important;
     color: #f5f7fa !important;

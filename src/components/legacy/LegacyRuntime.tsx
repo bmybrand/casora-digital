@@ -337,6 +337,7 @@ function setupServiceMenu() {
     const originalHeading = heading?.textContent ?? "";
     const originalToggle = toggle?.textContent ?? "";
     const originalHover = wrapper?.getAttribute("data-hover");
+    let closeTimer: number | undefined;
 
     list.innerHTML = serviceMenuItems
       .map(
@@ -363,20 +364,60 @@ function setupServiceMenu() {
       event.preventDefault();
       event.stopPropagation();
       event.stopImmediatePropagation();
+      toggleControl?.blur();
     };
 
     const clearWebflowOpenState = () => {
+      wrapper?.classList.remove("casora-hover-open");
       toggleControl?.classList.remove("w--open");
       dropdown.classList.remove("w--open");
       toggleControl?.setAttribute("aria-expanded", "false");
     };
 
+    const cancelScheduledClose = () => {
+      if (closeTimer === undefined) return;
+      window.clearTimeout(closeTimer);
+      closeTimer = undefined;
+    };
+
+    const openOnTriggerHover = () => {
+      if (window.innerWidth < 992) return;
+      cancelScheduledClose();
+      wrapper?.classList.add("casora-hover-open");
+    };
+
+    const scheduleClose = () => {
+      cancelScheduledClose();
+      closeTimer = window.setTimeout(() => {
+        closeTimer = undefined;
+        clearWebflowOpenState();
+      }, 250);
+    };
+
+    const closeAfterMenuLeave = (event: PointerEvent) => {
+      if (
+        event.relatedTarget instanceof Node &&
+        toggleControl?.contains(event.relatedTarget)
+      ) {
+        return;
+      }
+      clearWebflowOpenState();
+    };
+
+    toggleControl?.addEventListener("pointerenter", openOnTriggerHover);
+    toggleControl?.addEventListener("pointerleave", scheduleClose);
+    dropdown.addEventListener("pointerenter", cancelScheduledClose);
+    dropdown.addEventListener("pointerleave", closeAfterMenuLeave);
     toggleControl?.addEventListener("click", preventStickyClick, true);
-    wrapper?.addEventListener("pointerleave", clearWebflowOpenState);
 
     restorations.push(() => {
+      cancelScheduledClose();
+      toggleControl?.removeEventListener("pointerenter", openOnTriggerHover);
+      toggleControl?.removeEventListener("pointerleave", scheduleClose);
+      dropdown.removeEventListener("pointerenter", cancelScheduledClose);
+      dropdown.removeEventListener("pointerleave", closeAfterMenuLeave);
       toggleControl?.removeEventListener("click", preventStickyClick, true);
-      wrapper?.removeEventListener("pointerleave", clearWebflowOpenState);
+      wrapper?.classList.remove("casora-hover-open");
       list.innerHTML = originalList;
       if (heading) heading.textContent = originalHeading;
       if (toggle) toggle.textContent = originalToggle;
