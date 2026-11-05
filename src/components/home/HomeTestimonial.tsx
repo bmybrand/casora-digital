@@ -1,4 +1,4 @@
-import Image from "next/image";
+/* eslint-disable @next/next/no-img-element -- this is a pre-compressed, below-fold static-export asset */
 
 export function HomeTestimonial() {
   return (
@@ -7,13 +7,14 @@ export function HomeTestimonial() {
       aria-labelledby="casora-testimonial-quote"
     >
       <div className="casora-testimonial">
-        <Image
+        <img
           className="casora-testimonial__media"
           src="/assets/generated/testimonial-services-studio-v1.webp"
           alt=""
-          fill
-          sizes="100vw"
-          unoptimized
+          width="1600"
+          height="800"
+          loading="lazy"
+          decoding="async"
         />
         <div className="casora-testimonial__shade" aria-hidden="true" />
         <div className="casora-testimonial__inner">

@@ -1,3 +1,6 @@
+/* eslint-disable @next/next/no-html-link-for-pages -- full document navigation isolates the legacy Webflow runtime */
+/* eslint-disable @next/next/no-img-element -- exact-size pre-compressed static-export assets */
+
 export function SiteClosing() {
   return (
     <>

@@ -35,6 +35,10 @@ function stabilizeNavigationMarkup(body: string) {
 
   return body
     .replace(
+      /href="\/([a-z0-9-]+(?:\/[a-z0-9-]+)*)"/gi,
+      'href="/$1/"',
+    )
+    .replace(
       /\/assets\/generated\/([^"'?#\s]+?)\.(?:png|jpe?g)/gi,
       "/assets/generated/$1.webp",
     )
@@ -85,6 +89,7 @@ function stabilizeNavigationMarkup(body: string) {
 export function LegacyPage({ route }: LegacyPageProps) {
   const document = getPageDocument(route);
   const body = stabilizeNavigationMarkup(document.body);
+  const hasLegacyTestimonial = document.body.includes("What our clients share");
 
   return (
     <>
@@ -92,6 +97,7 @@ export function LegacyPage({ route }: LegacyPageProps) {
       <div
         id="legacy-page-root"
         data-casora-home={route === "" ? "true" : undefined}
+        data-casora-testimonial-replaced={hasLegacyTestimonial ? "true" : undefined}
         data-casora-service-detail={
           route.startsWith("services/") ? "true" : undefined
         }
@@ -99,7 +105,7 @@ export function LegacyPage({ route }: LegacyPageProps) {
         dangerouslySetInnerHTML={{ __html: body }}
       />
       {route === "" ? <HomeHero /> : null}
-      {route === "" ? <HomeTestimonial /> : null}
+      {hasLegacyTestimonial ? <HomeTestimonial /> : null}
       <SiteClosing />
       <LegacyRuntime pageId={document.pageId} scripts={document.scripts} />
     </>

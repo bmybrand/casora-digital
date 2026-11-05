@@ -117,8 +117,8 @@
 }
 
 /* Cinematic homepage testimonial replacing the exported review carousel. */
-#legacy-page-root[data-casora-home="true"] .home_clients,
-#legacy-page-root[data-casora-home="true"] .home_clients.casora-testimonial-host {
+#legacy-page-root[data-casora-testimonial-replaced="true"] .home_clients,
+#legacy-page-root[data-casora-testimonial-replaced="true"] .home_clients.casora-testimonial-host {
   display: none !important;
 }
 
@@ -154,6 +154,10 @@
 }
 
 .casora-testimonial__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   z-index: -3;
   object-fit: cover;
   object-position: 72% 42%;
