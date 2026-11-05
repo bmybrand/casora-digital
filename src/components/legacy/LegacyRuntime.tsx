@@ -187,7 +187,9 @@ function setupDeferredLegacySpline() {
       }>
     | undefined;
   const observers: IntersectionObserver[] = [];
+  const resizeObservers: ResizeObserver[] = [];
   const applications: DeferredSplineApplication[] = [];
+  const scenes = new Map<HTMLElement, string>();
   let disposed = false;
 
   const getRuntime = () => {
@@ -207,41 +209,93 @@ function setupDeferredLegacySpline() {
     const scene = element.dataset.splineUrl;
     if (!scene) return;
 
+    scenes.set(element, scene);
     element.removeAttribute("data-animation-type");
     element.removeAttribute("data-spline-url");
+    const revealTarget =
+      element.closest<HTMLElement>(".home_intro") ?? element;
+    const fallbackImage = element.parentElement?.querySelector<HTMLImageElement>(
+      ":scope > img.home_spline_roboto.display-tablet",
+    );
     const canvas =
       element.querySelector<HTMLCanvasElement>("canvas") ??
       element.appendChild(document.createElement("canvas"));
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
-        observer.disconnect();
+    let nearViewport = false;
+    let loading = false;
+    let ready = false;
+    const startWhenSized = () => {
+      if (disposed || !nearViewport || loading || ready) return;
+      const bounds = canvas.getBoundingClientRect();
+      if (bounds.width <= 0 || bounds.height <= 0) return;
 
-        void getRuntime()
-          .then(({ Application }) => {
-            if (disposed || canvas.clientWidth <= 0 || canvas.clientHeight <= 0) return;
-            const application = new Application(canvas);
-            applications.push(application);
-            return application.load(scene);
-          })
-          .then(() => {
-            if (!disposed) element.classList.add("is-ready");
-          })
-          .catch(() => {
-            // The responsive image inside the section remains as the fallback.
-          });
+      loading = true;
+      void getRuntime()
+        .then(({ Application }) => {
+          if (disposed) return;
+          const currentBounds = canvas.getBoundingClientRect();
+          if (currentBounds.width <= 0 || currentBounds.height <= 0) {
+            loading = false;
+            return;
+          }
+
+          const application = new Application(canvas);
+          applications.push(application);
+          return application.load(scene);
+        })
+        .then(() => {
+          loading = false;
+          if (!disposed) {
+            ready = true;
+            element.classList.add("is-ready");
+          }
+        })
+        .catch((error: unknown) => {
+          loading = false;
+          if (!disposed) {
+            console.warn(
+              "The interactive Spline scene could not be loaded.",
+              error instanceof Error ? error.message : String(error),
+            );
+          }
+        });
+    };
+
+    const preloadObserver = new IntersectionObserver(
+      (entries) => {
+        nearViewport = entries.some((entry) => entry.isIntersecting);
+        startWhenSized();
       },
-      { rootMargin: "180px 0px" },
+      { rootMargin: "600px 0px" },
+    );
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        if (
+          !entries.some(
+            (entry) => entry.isIntersecting && entry.intersectionRatio >= 0.2,
+          )
+        ) return;
+        element.classList.add("is-visible");
+        fallbackImage?.classList.add("is-visible");
+        revealObserver.disconnect();
+      },
+      { threshold: 0.2 },
     );
 
-    observer.observe(element);
-    observers.push(observer);
+    const resizeObserver = new ResizeObserver(startWhenSized);
+    resizeObserver.observe(revealTarget);
+    resizeObserver.observe(element);
+    resizeObserver.observe(canvas);
+    preloadObserver.observe(revealTarget);
+    revealObserver.observe(revealTarget);
+    observers.push(preloadObserver, revealObserver);
+    resizeObservers.push(resizeObserver);
   });
 
   return () => {
     disposed = true;
     observers.forEach((observer) => observer.disconnect());
+    resizeObservers.forEach((observer) => observer.disconnect());
     applications.forEach((application) => {
       if (typeof application.dispose !== "function") return;
       try {
@@ -249,6 +303,14 @@ function setupDeferredLegacySpline() {
       } catch {
         // Detached WebGL canvases are collected by the browser.
       }
+    });
+    scenes.forEach((scene, element) => {
+      element.dataset.animationType = "spline";
+      element.dataset.splineUrl = scene;
+      element.classList.remove("is-visible", "is-ready");
+      element.parentElement
+        ?.querySelector(":scope > img.home_spline_roboto.display-tablet")
+        ?.classList.remove("is-visible");
     });
   };
 }

@@ -57,8 +57,6 @@ function ServicesRobot() {
     let disposed = false;
     let loaded = false;
     let application: SplineApplication | undefined;
-    const host = canvasRef.current?.parentElement;
-    if (!host) return;
 
     async function loadScene() {
       try {
@@ -77,7 +75,17 @@ function ServicesRobot() {
         application = new runtime.Application(canvas);
         await application.load(splineSceneUrl);
         loaded = true;
-        if (!disposed) setIsReady(true);
+        if (disposed) {
+          if (typeof application.dispose === "function") {
+            try {
+              application.dispose();
+            } catch {
+              // The detached canvas is collected by the browser regardless.
+            }
+          }
+          return;
+        }
+        setIsReady(true);
       } catch (error) {
         if (!disposed) {
           console.warn(
@@ -88,19 +96,10 @@ function ServicesRobot() {
       }
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
-        observer.disconnect();
-        void loadScene();
-      },
-      { rootMargin: "160px 0px" },
-    );
-    observer.observe(host);
+    void loadScene();
 
     return () => {
       disposed = true;
-      observer.disconnect();
       if (loaded && typeof application?.dispose === "function") {
         try {
           application.dispose();
