@@ -800,6 +800,14 @@
     display: none !important;
   }
 
+  /* Keep Webflow's exported mobile navigation suppressed for the entire
+     drawer lifecycle. Otherwise it flashes while the custom drawer closes. */
+  .navbar .nav-menu > .mobile_menu,
+  .navbar .nav-menu > .nav-link,
+  .navbar .nav-menu > .nav-dropdown {
+    display: none !important;
+  }
+
   .navbar .w-nav-overlay {
     display: none !important;
   }
